@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Team avatar enforced style to ensure passport rectangle across the site */
+.team-avatar {
+	@apply w-32 h-40 object-cover object-center overflow-hidden rounded-lg;
+}
