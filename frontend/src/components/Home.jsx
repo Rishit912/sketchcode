@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Services from './Services';
 import AboutUs from './AboutUs';
 import Industries from './Industries';
+import Team from './Team';
 import Portfolio from './Portfolio';
 import Testimonials from './Testimonials';
 import Careers from './Careers';
@@ -176,6 +177,7 @@ const Home = () => {
     {/* Page sections rendered on Home (single-page style) */}
     <Services />
     <AboutUs />
+    <Team />
     <Industries />
     <Portfolio />
     <Testimonials />
