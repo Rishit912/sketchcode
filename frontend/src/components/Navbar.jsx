@@ -27,6 +27,7 @@ const Navbar = () => {
         <li><Link to="/portfolio" className={linkClasses}>Portfolio</Link></li>
         <li><Link to="/industries" className={linkClasses}>Industries</Link></li>
         <li><Link to="/testimonials" className={linkClasses}>Testimonials</Link></li>
+        <li><Link to="/team" className={linkClasses}>Team</Link></li>
         <li><Link to="/about" className={linkClasses}>About</Link></li>
         <li><Link to="/careers" className={linkClasses}>Careers</Link></li>
         <li><Link to="/contact" className={linkClasses}>Contact</Link></li>
@@ -71,6 +72,7 @@ const Navbar = () => {
           <Link to="/portfolio" className={linkClasses + ' text-xl'} onClick={() => setIsOpen(false)}>Portfolio</Link>
           <Link to="/industries" className={linkClasses + ' text-xl'} onClick={() => setIsOpen(false)}>Industries</Link>
           <Link to="/testimonials" className={linkClasses + ' text-xl'} onClick={() => setIsOpen(false)}>Testimonials</Link>
+          <Link to="/team" className={linkClasses + ' text-xl'} onClick={() => setIsOpen(false)}>Team</Link>
           <Link to="/about" className={linkClasses + ' text-xl'} onClick={() => setIsOpen(false)}>About</Link>
           <Link to="/careers" className={linkClasses + ' text-xl'} onClick={() => setIsOpen(false)}>Careers</Link>
           <Link to="/contact" className={linkClasses + ' text-xl'} onClick={() => setIsOpen(false)}>Contact</Link>
