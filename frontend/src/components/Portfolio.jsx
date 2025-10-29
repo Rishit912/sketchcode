@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FaExternalLinkAlt, FaCode, FaPaintBrush, FaMobileAlt, FaLaptopCode, FaGithub } from 'react-icons/fa';
 import { useLocation, useNavigate } from 'react-router-dom';
 import api from '../api';
+import AnimateOnScroll from './AnimateOnScroll'; // ADDED
 
 // Using shared `api` instance from ../api.js — no inline base URL required
 
@@ -209,82 +210,84 @@ const Portfolio = () => {
   );
 
   return (
-    <section className="bg-gray-900 text-gray-200 py-16 md:py-24 border-b-4 border-gray-700" id="portfolio">
-      <div className="container mx-auto px-6 lg:px-12">
-        <div className="text-center mb-16 md:mb-24">
-          <h1 className="text-4xl md:text-6xl font-extrabold leading-tight tracking-tight text-gray-50">
-            Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-500">Portfolio</span>
-          </h1>
-          <p className="mt-4 max-w-3xl mx-auto text-lg md:text-xl text-gray-400">
-            A showcase of our featured projects, where we blend creativity with technical excellence to deliver outstanding results.
-          </p>
-        </div>
-
-        <div className="flex flex-wrap justify-center gap-4 mb-16">
-          {filterButtons.map(button => (
-            <button
-              key={button.value}
-              onClick={() => setFilter(button.value)}
-              className={`flex items-center gap-2 px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 ${
-                filter === button.value
-                  ? 'bg-blue-600 text-white shadow-lg'
-                  : 'bg-gray-800 text-gray-300 border border-gray-700 hover:bg-gray-700'
-              }`}
-            >
-              {button.icon}
-              {button.label}
-            </button>
-          ))}
-        </div>
-
-        {loading ? (
-          <div className="flex justify-center items-center h-64">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500" />
+    <AnimateOnScroll> {/* WRAPPED SECTION */}
+      <section className="relative z-10 bg-gray-900/95 text-gray-200 py-16 md:py-24 border-b-4 border-gray-700" id="portfolio"> {/* ADDED relative z-10 bg-gray-900/95 */}
+        <div className="container mx-auto px-6 lg:px-12">
+          <div className="text-center mb-16 md:mb-24">
+            <h1 className="text-4xl md:text-6xl font-extrabold leading-tight tracking-tight text-gray-50">
+              Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-500">Portfolio</span>
+            </h1>
+            <p className="mt-4 max-w-3xl mx-auto text-lg md:text-xl text-gray-400">
+              A showcase of our featured projects, where we blend creativity with technical excellence to deliver outstanding results.
+            </p>
           </div>
-        ) : (
-          <>
-            {showAddedMsg && (
-              <div className="mb-6 max-w-3xl mx-auto text-center">
-                <div className="inline-block bg-green-600 text-white px-4 py-2 rounded-lg shadow">
-                  Project added successfully — now visible in the portfolio!
+
+          <div className="flex flex-wrap justify-center gap-4 mb-16">
+            {filterButtons.map(button => (
+              <button
+                key={button.value}
+                onClick={() => setFilter(button.value)}
+                className={`flex items-center gap-2 px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 ${
+                  filter === button.value
+                    ? 'bg-blue-600 text-white shadow-lg'
+                    : 'bg-gray-800 text-gray-300 border border-gray-700 hover:bg-gray-700'
+                }`}
+              >
+                {button.icon}
+                {button.label}
+              </button>
+            ))}
+          </div>
+
+          {loading ? (
+            <div className="flex justify-center items-center h-64">
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500" />
+            </div>
+          ) : (
+            <>
+              {showAddedMsg && (
+                <div className="mb-6 max-w-3xl mx-auto text-center">
+                  <div className="inline-block bg-green-600 text-white px-4 py-2 rounded-lg shadow">
+                    Project added successfully — now visible in the portfolio!
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
 
-            {filter === 'all' ? (
-              // When 'All' is selected show a single grid with all projects (no separate subsections)
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-                {projects.length > 0 ? (
-                  projects.map(project => (
+              {filter === 'all' ? (
+                // When 'All' is selected show a single grid with all projects (no separate subsections)
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                  {projects.length > 0 ? (
+                    projects.map(project => (
+                      <ProjectCard key={project._id} project={project} />
+                    ))
+                  ) : (
+                    <div className="md:col-span-2 lg:col-span-3 text-center p-12 bg-gray-800 rounded-2xl border border-gray-700">
+                      <p className="text-gray-400 text-xl font-medium">
+                        No projects added yet. Check back soon or add a project from the admin dashboard.
+                      </p>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                  {filteredProjects.map(project => (
                     <ProjectCard key={project._id} project={project} />
-                  ))
-                ) : (
-                  <div className="md:col-span-2 lg:col-span-3 text-center p-12 bg-gray-800 rounded-2xl border border-gray-700">
-                    <p className="text-gray-400 text-xl font-medium">
-                      No projects added yet. Check back soon or add a project from the admin dashboard.
-                    </p>
-                  </div>
-                )}
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-                {filteredProjects.map(project => (
-                  <ProjectCard key={project._id} project={project} />
-                ))}
+                  ))}
 
-                {filteredProjects.length === 0 && (
-                  <div className="md:col-span-2 lg:col-span-3 text-center p-12 bg-gray-800 rounded-2xl border border-gray-700">
-                    <p className="text-gray-400 text-xl font-medium">
-                      No projects found for this category yet. We are working on adding more projects soon!
-                    </p>
-                  </div>
-                )}
-              </div>
-            )}
-          </>
-        )}
-      </div>
-    </section>
+                  {filteredProjects.length === 0 && (
+                    <div className="md:col-span-2 lg:col-span-3 text-center p-12 bg-gray-800 rounded-2xl border border-gray-700">
+                      <p className="text-gray-400 text-xl font-medium">
+                        No projects found for this category yet. We are working on adding more projects soon!
+                      </p>
+                    </div>
+                  )}
+                </div>
+              )}
+            </>
+          )}
+        </div>
+      </section>
+    </AnimateOnScroll> 
   );
 };
 

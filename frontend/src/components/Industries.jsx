@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import AnimateOnScroll from './AnimateOnScroll';
 
 const industriesData = [
   {
@@ -45,17 +46,16 @@ const Industries = () => {
   const current = industriesData.find(i => i.id === selected) || industriesData[0];
 
   return (
+    <AnimateOnScroll>
     <section id="industries" className="bg-gray-900 text-gray-200 py-16 md:py-24 border-b-4 border-gray-700">
       <div className="container mx-auto px-6 lg:px-12">
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-6xl font-extrabold leading-tight tracking-tight text-gray-50">
+<h1 className="text-4xl md:text-6xl font-extrabold leading-tight tracking-tight text-gray-50">
             industries <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-500">We Serve</span>
-          </h1>
-          <p className="mt-4 text-gray-400 max-w-3xl mx-auto">Specialized solutions for industry-specific problems — pick an industry to see details and services we provide.</p>
+          </h1>          <p className="mt-4 text-gray-400 max-w-3xl mx-auto">Specialized solutions for industry-specific problems — pick an industry to see details and services we provide.</p>
         </div>
 
-        {/* Desktop / wide layout */}
-        <div className="hidden md:grid grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="space-y-4">
             {industriesData.map(ind => (
               <button
@@ -94,53 +94,9 @@ const Industries = () => {
             </div>
           </div>
         </div>
-
-        {/* Mobile / narrow layout: accordion per industry */}
-        <div className="md:hidden space-y-4">
-          {industriesData.map(ind => (
-            <div key={ind.id} className="w-full">
-              <button
-                onClick={() => setSelected(selected === ind.id ? null : ind.id)}
-                aria-expanded={selected === ind.id}
-                className={`w-full text-left p-4 rounded-2xl border ${selected===ind.id? 'border-blue-500 bg-gray-800': 'border-gray-700 bg-gray-800'} flex items-center justify-between`}
-              >
-                <div>
-                  <h3 className="font-bold text-gray-100">{ind.title}</h3>
-                  <p className="text-gray-400 text-sm mt-1">{ind.summary}</p>
-                </div>
-                <div className="text-gray-400 text-xl">{selected === ind.id ? '−' : '+'}</div>
-              </button>
-
-              {selected === ind.id && (
-                <div className="mt-3 bg-gray-800 p-4 rounded-2xl border border-gray-700 space-y-4">
-                  <p className="text-gray-400">{ind.details}</p>
-
-                  <div className="grid grid-cols-1 gap-4">
-                    <div className="bg-gray-700 p-4 rounded-lg">
-                      <h4 className="font-semibold text-gray-100">Services We Provide</h4>
-                      <ul className="text-gray-300 mt-2 list-disc list-inside">
-                        <li>Custom Web & Mobile Apps</li>
-                        <li>UI/UX Design & Prototyping</li>
-                        <li>Integrations & APIs</li>
-                      </ul>
-                    </div>
-
-                    <div className="bg-gray-700 p-4 rounded-lg">
-                      <h4 className="font-semibold text-gray-100">Business Outcomes</h4>
-                      <ul className="text-gray-300 mt-2 list-disc list-inside">
-                        <li>Improved conversion & retention</li>
-                        <li>Operational efficiency</li>
-                        <li>Scalable systems</li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
       </div>
     </section>
+    </AnimateOnScroll>
   );
 }
 
