@@ -174,15 +174,15 @@ const Home = () => {
       </style>
     </section>
 
-    {/* Page sections rendered on Home (single-page style) */}
-    <Services />
-    <AboutUs />
-    <Team />
-    <Industries />
-    <Portfolio />
-    <Testimonials />
-    <Careers />
-    <ContactUs />
+  {/* Page sections rendered on Home (single-page style) - reordered to match navbar */}
+  <Services />
+  <Industries />
+  <Portfolio />
+  <Team />
+  <Testimonials />
+  <AboutUs />
+  <Careers />
+  <ContactUs />
 </>
   );
 }
