@@ -92,7 +92,7 @@ const Navbar = () => {
 
         {/* Mobile "Get Demo" Button */}
         <Link to="/contact" onClick={() => setIsOpen(false)}>
-          <button className="bg-gradient-to-r from-purple-500 via-pink-500 to-indigo-500 text-white py-2 px-6 rounded-full text-lg font-semibold shadow-lg transition transform hover:scale-105">
+          <button className="bg-gradient-to-r from-purple-500  to-indigo-500 text-white py-2 px-6 rounded-full text-lg font-semibold shadow-lg transition transform hover:scale-105">
             Get Demo
           </button>
         </Link>
