@@ -66,7 +66,7 @@ const Home = () => {
     <>
       {/* WRAP THE MAIN SECTION with the animation component */}
       {/* Setting duration to 1500ms for a slower, smoother hero entrance */}
-      <AnimateOnScroll duration="duration-2000"> 
+      <AnimateOnScroll duration="duration-1000"> 
         <section 
           id="home" 
           // Added required z-index and opaque background for visibility over fixed background animation
