@@ -26,12 +26,12 @@ const Footer = () => {
             <h3 className="text-sm font-semibold text-gray-100 mb-4">Quick Links</h3>
             <ul className="space-y-2">
               <li><Link to="/" onClick={handleNavClick} className="text-gray-300 hover:text-blue-400 transition">Home</Link></li>
-              <li><Link to="/careers" onClick={handleNavClick} className="text-gray-300 hover:text-blue-400 transition">Careers</Link></li>
 
-              <li><Link to="/about" onClick={handleNavClick} className="text-gray-300 hover:text-blue-400 transition">About</Link></li>
               <li><Link to="/services" onClick={handleNavClick} className="text-gray-300 hover:text-blue-400 transition">Services</Link></li>
               <li><Link to="/portfolio" onClick={handleNavClick} className="text-gray-300 hover:text-blue-400 transition">Portfolio</Link></li>
               <li><Link to="/team" onClick={handleNavClick} className="text-gray-300 hover:text-blue-400 transition">Team</Link></li>
+              <li><Link to="/about" onClick={handleNavClick} className="text-gray-300 hover:text-blue-400 transition">About</Link></li>
+              <li><Link to="/careers" onClick={handleNavClick} className="text-gray-300 hover:text-blue-400 transition">Careers</Link></li>
               <li><Link to="/contact" onClick={handleNavClick} className="text-gray-300 hover:text-blue-400 transition">Contact</Link></li>
             </ul>
           </nav>
