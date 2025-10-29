@@ -66,7 +66,7 @@ const Home = () => {
     <>
       {/* WRAP THE MAIN SECTION with the animation component */}
       {/* Setting duration to 1500ms for a slower, smoother hero entrance */}
-      <AnimateOnScroll duration="duration-1000"> 
+      <AnimateOnScroll duration="duration-1500"> 
         <section 
           id="home" 
           // Added required z-index and opaque background for visibility over fixed background animation
@@ -149,7 +149,7 @@ const Home = () => {
                   <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20"></div>
                   <div className="relative z-10 text-center">
                     <h3 className="text-xl md:text-2xl font-bold text-gray-50 mb-1 animate-pulse-light">Sketchcode</h3> {/* Your Company Name */}
-                    <p className="text-xs md:text-sm text-blue-200 mb-3">Crafting Digital Excellence</p> {/* Your Tagline */}
+                    <p className="text-xs md:text-sm text-blue-200 mb-3"> we turn visionary ideas into exceptional digital realities. Our mission: to create powerful digital solutions that are a joy to build and use.</p> {/* Your Tagline */}
                     <div className="bg-blue-600/50 h-1.5 w-3/4 mx-auto rounded-full mb-2 animate-pulse-slow"></div>
                     <div className="bg-purple-600/50 h-1.5 w-1/2 mx-auto rounded-full animate-pulse-slow delay-300"></div>
                   </div>

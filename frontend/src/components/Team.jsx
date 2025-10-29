@@ -38,9 +38,12 @@ const Team = () => {
       <section className="relative z-10 bg-gray-900/95 text-gray-200 py-16 md:py-24 border-b-4 border-gray-700 min-h-screen"> {/* ADDED relative z-10 bg-gray-900/95 */}
         <div className="container mx-auto px-6 lg:px-12">
           <div className="text-center mb-12 md:mb-16">
-            <h1 className="text-4xl md:text-6xl font-extrabold leading-tight tracking-tight text-gray-50">
-              Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-500">Team</span>
-            </h1>
+             <h1 className="text-4xl md:text-6xl font-extrabold text-gray-50 font-serif">
+    Our{" "}
+    <span className="text-6xl md:text-6xl text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
+      Team
+    </span>
+  </h1>
             <p className="mt-4 max-w-3xl mx-auto text-lg md:text-xl text-gray-400">
               Meet the people who build SketchCode.
             </p>

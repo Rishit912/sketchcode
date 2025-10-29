@@ -16,13 +16,11 @@ import Login from "./components/Login";
 import AdminDashboard from "./components/AdminDashboard";
 import TeamManagement from "./components/TeamManagement";
 import Team from './components/Team';
-import BackgroundAnimation from "./components/BackgroundAnimation";
 
 function App() {
   return (
     <Router>
       {/* Global Animated Background */}
-      <BackgroundAnimation />
       <div className="fixed inset-0 z-0">
         <div className="absolute inset-0 bg-gray-900">
           <div className="absolute inset-0 opacity-20">
@@ -35,7 +33,7 @@ function App() {
           <div className="animate-line-1"></div>
           <div className="animate-line-2"></div>
           <div className="animate-line-3"></div>
-          
+
           {/* Glowing Orbs */}
           <div className="glow-orb-1"></div>
           <div className="glow-orb-2"></div>

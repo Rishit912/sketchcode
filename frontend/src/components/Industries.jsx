@@ -106,13 +106,13 @@ const Industries = () => {
 
   return (
     <AnimateOnScroll>
-    <section id="industries" className="bg-gray-900 text-gray-200 py-16 md:py-24 font-['Inter']">
-      <div className="container mx-auto px-6 lg:px-12">
+    <section id="industries" className="bg-gray-900 text-gray-200 py-16 md:py-24 font-['Inter'] border-b-4 border-gray-700">
+      <div className="container mx-auto px-6 lg:px-12 ">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-6xl font-extrabold leading-tight tracking-tight text-gray-50">
-            Industries <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-600">We Serve</span>
-          </h1>
+         <h1 className="text-4xl md:text-6xl  leading-tight tracking-tight text-gray-50 font-extrabold ">
+          Industries We <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-500 font-extrabold ">Serve</span>
+        </h1> 
           <p className="mt-4 text-gray-400 max-w-3xl mx-auto text-lg">Specialized solutions for industry-specific problems — explore our sector expertise below.</p>
         </div>
 
@@ -154,7 +154,7 @@ const Industries = () => {
             return (
               <div 
                 key={ind.id} 
-                className="bg-gray-800 rounded-xl border border-gray-700 overflow-hidden shadow-lg"
+                className="bg-gray-800 rounded-xl border-b-4 border-gray-700 overflow-hidden shadow-lg"
               >
                 {/* Accordion Header/Button */}
                 <button
@@ -193,6 +193,7 @@ const Industries = () => {
 
 
       </div>
+      
     </section>
       </AnimateOnScroll>
   );

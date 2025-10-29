@@ -16,41 +16,51 @@ const ContactUs = () => {
 
     try {
       await emailjs.sendForm(
-        'service_xekcl78',      // Replace with your Service ID
-        'template_0wmsn1t',     // Replace with your Template ID
-        e.target,               // The form element
-        'dUx0kHekaic6WXHUU'     // Replace with your Public Key
+        'service_xekcl78', // Your EmailJS Service ID
+        'template_0wmsn1t', // Your Template ID
+        e.target,           // The form element
+        'dUx0kHekaic6WXHUU' // Your Public Key
       );
-      setStatus('success');
-      setFormData({ name: '', email: '', message: '' }); // Clear form
 
-      // Hide success message after 4s
+      setStatus('success');
+      setFormData({ name: '', email: '', message: '' }); // Reset form
+
       setTimeout(() => setStatus('idle'), 4000);
     } catch (error) {
       console.error('Email sending failed:', error);
       setStatus('error');
-
-      // Hide error message after 4s
       setTimeout(() => setStatus('idle'), 4000);
     }
   };
 
   return (
-    <section className="bg-gray-900 text-gray-200 py-16 md:py-24 border-b-4 border-gray-700" id="contact">
+    <section
+      id="contact"
+      className="relative z-10 bg-gray-900 text-gray-200 py-16 md:py-24 border-b border-gray-800"
+    >
       <div className="container mx-auto px-6 lg:px-12">
+        {/* --- Unified Heading Section --- */}
         <div className="text-center mb-16 md:mb-24">
-          <h1 className="text-4xl md:text-6xl font-extrabold leading-tight tracking-tight text-gray-50">
-            Let's <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-500">Connect</span>
+          <h1 className="text-4xl md:text-6xl font-extrabold font-serif text-gray-50">
+            Let’s{' '}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
+              Connect
+            </span>
           </h1>
           <p className="mt-4 max-w-2xl mx-auto text-lg md:text-xl text-gray-400">
-            Have a project in mind? Reach out to us and let's start the conversation.
+            Have a project in mind? Reach out to us — we’d love to hear from you.
           </p>
         </div>
 
-        <div className="max-w-xl mx-auto bg-gray-800 p-8 md:p-12 rounded-2xl shadow-2xl border border-gray-700">
+        {/* --- Contact Form Card --- */}
+        <div className="max-w-xl mx-auto bg-gray-800/90 backdrop-blur-sm p-8 md:p-12 rounded-2xl shadow-lg border border-gray-700 hover:border-purple-500/40 transition-all duration-300 hover:shadow-2xl">
           <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Name Field */}
             <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-400 mb-2">
+              <label
+                htmlFor="name"
+                className="block text-sm font-medium text-gray-400 mb-2"
+              >
                 Your Name
               </label>
               <input
@@ -59,12 +69,18 @@ const ContactUs = () => {
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
-                className="w-full px-4 py-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200"
+                className="w-full px-4 py-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 
+                focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
                 required
               />
             </div>
+
+            {/* Email Field */}
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-400 mb-2">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-400 mb-2"
+              >
                 Your Email
               </label>
               <input
@@ -73,12 +89,18 @@ const ContactUs = () => {
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                className="w-full px-4 py-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200"
+                className="w-full px-4 py-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 
+                focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
                 required
               />
             </div>
+
+            {/* Message Field */}
             <div>
-              <label htmlFor="message" className="block text-sm font-medium text-gray-400 mb-2">
+              <label
+                htmlFor="message"
+                className="block text-sm font-medium text-gray-400 mb-2"
+              >
                 Your Message
               </label>
               <textarea
@@ -87,15 +109,19 @@ const ContactUs = () => {
                 value={formData.message}
                 onChange={handleChange}
                 rows="6"
-                className="w-full px-4 py-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200"
+                className="w-full px-4 py-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 
+                focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
                 required
               ></textarea>
             </div>
-            
+
+            {/* Submit Button */}
             <div className="flex justify-center">
               <button
                 type="submit"
-                className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 flex items-center gap-2"
+                className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 
+                text-white font-bold py-3 px-10 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 
+                flex items-center gap-2"
                 disabled={status === 'sending'}
               >
                 {status === 'sending' ? (
@@ -110,15 +136,15 @@ const ContactUs = () => {
               </button>
             </div>
 
-            {/* Feedback Messages */}
+            {/* Status Messages */}
             {status === 'success' && (
               <p className="text-green-500 text-center mt-4">
-                Thank you! Your message has been sent.
+                ✅ Thank you! Your message has been sent successfully.
               </p>
             )}
             {status === 'error' && (
               <p className="text-red-500 text-center mt-4">
-                Oops! Something went wrong. Please try again later.
+                ❌ Something went wrong. Please try again later.
               </p>
             )}
           </form>
