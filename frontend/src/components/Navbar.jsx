@@ -35,7 +35,7 @@ const Navbar = () => {
       {/* Desktop "Get Demo" Button */}
       <div className="hidden md:block">
         <Link to="/contact">
-          <button className="bg-gradient-to-r from-purple-500 via-pink-500 to-indigo-500 text-white py-2 px-5 rounded-full font-semibold shadow-lg transition transform hover:scale-105">
+          <button className="bg-gradient-to-r from-purple-500  to-indigo-500 text-white py-2 px-5 rounded-full font-semibold shadow-lg transition transform hover:scale-105">
             Get Demo
           </button>
         </Link>
