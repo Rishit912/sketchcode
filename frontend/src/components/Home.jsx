@@ -56,7 +56,7 @@ const Home = () => {
             
             {/* Tagline - Slide Down */}
             <AnimateOnScroll duration="duration-700" delay={200} direction="down">
-              <span className="bg-gray-800 shadow-md px- py-1 rounded-full text-gray-400 font-semibold mb-4 md:mb-6 flex items-center justify-center sm:justify-start gap-2 text-sm md:text-base border border-gray-700">
+              <span className="bg-gray-800 shadow-md px-4 py-1 rounded-full text-gray-400 font-semibold mb-4 md:mb-6 flex items-center justify-center sm:justify-start gap-2 text-sm md:text-base border border-gray-700">
                 <span className="text-yellow-400 text-base md:text-lg">★</span> Powered by Sketchcode
               </span>
             </AnimateOnScroll>
