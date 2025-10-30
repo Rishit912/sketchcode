@@ -2,21 +2,20 @@
 
 import React, { useRef, useEffect, useState } from 'react';
 
-const AnimateOnScroll = ({ children, delay = 0, duration = 'duration-1000' }) => {
+// Define the component, accepting a new 'direction' prop
+const AnimateOnScroll = ({ children, delay = 0, duration = 'duration-1000', direction = 'up' }) => {
   const ref = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        // If the element is intersecting (visible), set isVisible to true
         if (entry.isIntersecting) {
           setIsVisible(true);
-          // Stop observing once visible to prevent re-triggering
           observer.unobserve(entry.target);
         }
       },
-      // Threshold and margin define when the animation triggers
+      // Trigger when 10% of the element is visible
       { rootMargin: '0px', threshold: 0.1 } 
     );
 
@@ -26,21 +25,42 @@ const AnimateOnScroll = ({ children, delay = 0, duration = 'duration-1000' }) =>
 
     return () => {
       if (ref.current) {
-        // Use a temp variable for current as ref.current might be null in cleanup
-        const currentRef = ref.current; 
-        if (currentRef) {
-          observer.unobserve(currentRef);
-        }
+        // Safe cleanup
+        observer.unobserve(ref.current); 
       }
     };
   }, []);
 
-  // Tailwind classes for the animation effect:
+  // Tailwind classes for the animation effect
   const transitionClass = `transition-all transform ${duration} ease-out`;
 
-  const animationClasses = isVisible
-    ? 'opacity-100 translate-y-0' // End state: fully visible, no vertical shift
-    : 'opacity-0 translate-y-16'; // Start state: invisible, shifted down 16 units (4rem)
+  // --- Dynamic Start Position (Hidden State) ---
+  let startClasses;
+  switch (direction.toLowerCase()) {
+    case 'left':
+      // Start hidden far right, end at normal position (x=0)
+      startClasses = 'opacity-0 translate-x-16'; 
+      break;
+    case 'right':
+      // Start hidden far left, end at normal position (x=0)
+      startClasses = 'opacity-0 -translate-x-16'; 
+      break;
+    case 'down':
+      // Start hidden far up, end at normal position (y=0)
+      startClasses = 'opacity-0 -translate-y-16'; 
+      break;
+    case 'up':
+    default:
+      // Start hidden far down, end at normal position (y=0)
+      startClasses = 'opacity-0 translate-y-16'; 
+      break;
+  }
+  
+  // End state (Visible State)
+  const endClasses = 'opacity-100 translate-x-0 translate-y-0';
+
+  // Apply the correct classes based on visibility
+  const animationClasses = isVisible ? endClasses : startClasses;
 
   return (
     <div

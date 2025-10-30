@@ -1,7 +1,7 @@
 import React from "react";
 import AnimateOnScroll from "./AnimateOnScroll";
 
-// Inline SVG Icons (no external dependency)
+// Inline SVG Icons (kept unchanged)
 const HeartIcon = (props) => (
   <svg
     {...props}
@@ -83,22 +83,24 @@ const AboutUs = () => {
       >
         <div className="container mx-auto px-6 lg:px-12">
           {/* INTRO SECTION */}
-          <div className="text-center mb-16">
-            <h1 className="text-4xl md:text-6xl font-extrabold text-gray-50">
-              We are{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
-                SketchCode
-              </span>
-            </h1>
-            <p className="mt-4 text-gray-400 max-w-3xl mx-auto">
-              At SketchCode, we turn visionary ideas into exceptional digital
-              realities. Our mission: to create powerful digital solutions that
-              are a joy to build and use.
-            </p>
-          </div>
+          <AnimateOnScroll duration="duration-800" delay={0}>
+            <div className="text-center mb-16">
+              <h1 className="text-4xl md:text-6xl font-extrabold text-gray-50">
+                We are{" "}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
+                  SketchCode
+                </span>
+              </h1>
+              <p className="mt-4 text-gray-400 max-w-3xl mx-auto">
+                At SketchCode, we turn visionary ideas into exceptional digital
+                realities. Our mission: to create powerful digital solutions that
+                are a joy to build and use.
+              </p>
+            </div>
+          </AnimateOnScroll>
 
-          {/* OUR FOUNDATION */}
-          <AnimateOnScroll delay={150} duration="duration-800">
+          {/* OUR FOUNDATION (Full Block Slide-in) */}
+          <AnimateOnScroll delay={150} duration="duration-800" direction="right">
             <div className="bg-gray-800 p-10 md:p-12 rounded-2xl shadow-xl border border-gray-700 mb-16">
               <h2 className="text-3xl font-bold text-gray-50 mb-4 text-center">
                 Our{" "}
@@ -122,20 +124,24 @@ const AboutUs = () => {
 
           {/* OUR COLLABORATIVE PROCESS */}
           <div className="mb-16 text-center">
-            <h2 className="text-3xl md:text-5xl font-extrabold text-gray-50 mb-4">
-              Our Collaborative{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
-                Process
-              </span>
-            </h2>
-            <p className="text-gray-400 max-w-2xl mx-auto text-lg mb-8">
-              The best results come from working together — our process is
-              transparent, efficient, and centered around your vision.
-            </p>
+            {/* Process Title (Slide Down) */}
+            <AnimateOnScroll delay={50} duration="duration-700" direction="down">
+              <h2 className="text-3xl md:text-5xl font-extrabold text-gray-50 mb-4">
+                Our Collaborative{" "}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
+                  Process
+                </span>
+              </h2>
+              <p className="text-gray-400 max-w-2xl mx-auto text-lg mb-8">
+                The best results come from working together — our process is
+                transparent, efficient, and centered around your vision.
+              </p>
+            </AnimateOnScroll>
 
+            {/* Process Steps - Alternating Left, Up, Right */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
-              {/* Step 1 */}
-              <AnimateOnScroll delay={100}>
+              {/* Step 1 (Slide Right) */}
+              <AnimateOnScroll delay={300} direction="right">
                 <div className="bg-gray-800 p-8 rounded-2xl shadow-xl border border-gray-700 
                                 transform transition-transform duration-300 hover:scale-105 
                                 h-full flex flex-col justify-between">
@@ -153,8 +159,8 @@ const AboutUs = () => {
                 </div>
               </AnimateOnScroll>
 
-              {/* Step 2 */}
-              <AnimateOnScroll delay={300}>
+              {/* Step 2 (Slide Up) */}
+              <AnimateOnScroll delay={500} direction="up">
                 <div className="bg-gray-800 p-8 rounded-2xl shadow-xl border border-gray-700 
                                 transform transition-transform duration-300 hover:scale-105 
                                 h-full flex flex-col justify-between">
@@ -171,8 +177,8 @@ const AboutUs = () => {
                 </div>
               </AnimateOnScroll>
 
-              {/* Step 3 */}
-              <AnimateOnScroll delay={500}>
+              {/* Step 3 (Slide Left) */}
+              <AnimateOnScroll delay={700} direction="left">
                 <div className="bg-gray-800 p-8 rounded-2xl shadow-xl border border-gray-700 
                                 transform transition-transform duration-300 hover:scale-105 
                                 h-full flex flex-col justify-between">
@@ -193,20 +199,28 @@ const AboutUs = () => {
 
           {/* WHY CHOOSE US */}
           <div className="mb-16">
-            <h2 className="text-3xl md:text-5xl font-extrabold text-gray-50 text-center mb-4">
-              Why Choose{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
-                SketchCode
-              </span>
-            </h2>
-            <p className="text-gray-400 max-w-3xl mx-auto text-lg text-center mb-8">
-              We deliver exceptional value through an AI-first mindset, rapid
-              development, and dedication to our clients’ success.
-            </p>
+            {/* Choose Us Title (Slide Left) */}
+            <AnimateOnScroll delay={200} duration="duration-700" direction="left">
+              <h2 className="text-3xl md:text-5xl font-extrabold text-gray-50 text-center mb-4">
+                Why Choose{" "}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
+                  SketchCode
+                </span>
+              </h2>
+              <p className="text-gray-400 max-w-3xl mx-auto text-lg text-center mb-8">
+                We deliver exceptional value through an AI-first mindset, rapid
+                development, and dedication to our clients’ success.
+              </p>
+            </AnimateOnScroll>
 
+            {/* Choose Us Features - Zig-zagging Left/Right */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
               {chooseUsFeatures.map((feature, index) => (
-                <AnimateOnScroll key={index} delay={index * 150}>
+                <AnimateOnScroll 
+                  key={index} 
+                  delay={index * 200 + 250} // Added a larger starting delay
+                  direction={index % 2 === 0 ? "right" : "left"} // Alternating directions
+                >
                   <div className="bg-gray-800 p-8 rounded-2xl shadow-xl border border-gray-700 
                                   transform transition-transform duration-300 hover:scale-105 
                                   h-full flex flex-col justify-between">
@@ -220,8 +234,8 @@ const AboutUs = () => {
             </div>
           </div>
 
-          {/* CTA SECTION */}
-          <AnimateOnScroll delay={200}>
+          {/* CTA SECTION (Slide Down) */}
+          <AnimateOnScroll delay={300} direction="down">
             <div className="bg-blue-600 text-white p-12 rounded-3xl text-center shadow-lg mb-12">
               <h3 className="text-2xl md:text-3xl font-extrabold mb-2">
                 Ready to build something amazing together?
@@ -238,8 +252,8 @@ const AboutUs = () => {
             </div>
           </AnimateOnScroll>
 
-          {/* MEET FOUNDER */}
-          <AnimateOnScroll delay={400}>
+          {/* MEET FOUNDER (Slide Left) */}
+          <AnimateOnScroll delay={500} direction="left">
             <div className="bg-gray-800 p-8 rounded-2xl shadow-xl border border-gray-700 text-center">
               <h3 className="text-3xl md:text-5xl font-extrabold text-gray-50 mb-4">
                 Meet Our{" "}

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import AnimateOnScroll from './AnimateOnScroll';
+import AnimateOnScroll from './AnimateOnScroll'; // ADDED
+
 // The external component AnimateOnScroll has been removed to resolve the compilation error.
 // The external import for @heroicons/react has been removed to fix the resolution error.
 // We will use inline SVGs instead.
@@ -105,97 +106,108 @@ const Industries = () => {
   };
 
   return (
-    <AnimateOnScroll>
-    <section id="industries" className="bg-gray-900 text-gray-200 py-16 md:py-24 font-['Inter'] border-b-4 border-gray-700">
-      <div className="container mx-auto px-6 lg:px-12 ">
-        {/* Header */}
-        <div className="text-center mb-12">
-         <h1 className="text-4xl md:text-6xl  leading-tight tracking-tight text-gray-50 font-extrabold ">
-          Industries We <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-500 font-extrabold ">Serve</span>
-        </h1> 
-          <p className="mt-4 text-gray-400 max-w-3xl mx-auto text-lg">Specialized solutions for industry-specific problems — explore our sector expertise below.</p>
-        </div>
+    // Outer component ensures the section starts the animation when it comes into view
+    <AnimateOnScroll duration="duration-1000">
+      <section id="industries" className="bg-gray-900 text-gray-200 py-16 md:py-24 font-['Inter'] border-b-4 border-gray-700">
+        <div className="container mx-auto px-6 lg:px-12 ">
+          
+          {/* Header - Slide Down */}
+          <AnimateOnScroll delay={100} duration="duration-700" direction="down">
+            <div className="text-center mb-12">
+             <h1 className="text-4xl md:text-6xl  leading-tight tracking-tight text-gray-50 font-extrabold ">
+               Industries We <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-500 font-extrabold ">Serve</span>
+             </h1> 
+              <p className="mt-4 text-gray-400 max-w-3xl mx-auto text-lg">Specialized solutions for industry-specific problems — explore our sector expertise below.</p>
+            </div>
+          </AnimateOnScroll>
 
-        {/* --- DESKTOP VIEW (md: and up) --- */}
-        {/* Hides the desktop sidebar/content view on small screens */}
-        <div className="hidden md:grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Industry Selection Buttons (Sidebar) */}
-          <div className="space-y-4">
-            {industriesData.map(ind => (
-              <button
-                key={ind.id}
-                onClick={() => setSelected(ind.id)}
-                className={`w-full text-left p-5 rounded-xl transition duration-200 ease-in-out shadow-lg
-                  ${selected === ind.id 
-                    ? 'border border-blue-500 bg-gray-800 text-gray-50 scale-[1.01]' 
-                    : 'border border-gray-700 bg-gray-800/60 text-gray-200 hover:bg-gray-700/80'
-                  } 
-                  hover:shadow-blue-500/20
-                `}
-              >
-                <h3 className="font-bold text-xl">{ind.title}</h3>
-                <p className="text-gray-400 text-sm mt-1">{ind.summary}</p>
-              </button>
-            ))}
+          {/* --- DESKTOP VIEW (md: and up) --- */}
+          {/* Main grid wrapper is NOT animated */}
+          <div className="hidden md:grid grid-cols-1 md:grid-cols-3 gap-8">
+            
+            {/* 1. Left Panel: Industry Selection Buttons - Staggered Slide Right */}
+            <div className="space-y-4">
+              {industriesData.map((ind, index) => (
+                // Individual animation for each button
+                <AnimateOnScroll key={ind.id} delay={200 + index * 100} duration="duration-600" direction="right">
+                  <button
+                    onClick={() => setSelected(ind.id)}
+                    className={`w-full text-left p-5 rounded-xl transition duration-200 ease-in-out shadow-lg
+                      ${selected === ind.id 
+                        ? 'border border-blue-500 bg-gray-800 text-gray-50 scale-[1.01]' 
+                        : 'border border-gray-700 bg-gray-800/60 text-gray-200 hover:bg-gray-700/80'
+                      } 
+                      hover:shadow-blue-500/20
+                    `}
+                  >
+                    <h3 className="font-bold text-xl">{ind.title}</h3>
+                    <p className="text-gray-400 text-sm mt-1">{ind.summary}</p>
+                  </button>
+                </AnimateOnScroll>
+              ))}
+            </div>
+
+            {/* 2. Right Panel: Details Content (NO SCROLL ANIMATION HERE) */}
+            <div className="md:col-span-2">
+              {/* Note: No AnimateOnScroll wrapper here, preserving static appearance on scroll */}
+              <div className="bg-gray-800 p-8 rounded-xl border border-gray-700 shadow-2xl h-full w-full"> 
+                {/* 💡 The w-full class is retained here to ensure max width in the column, addressing your request */}
+                <h2 className="text-3xl font-bold text-gray-50 mb-6 border-b border-gray-700 pb-3">{current.title}</h2>
+                <IndustryDetailsContent current={current} />
+              </div>
+            </div>
           </div>
 
-          {/* Details Content (Main Panel) */}
-          <div className="md:col-span-2 bg-gray-800 p-8 rounded-xl border border-gray-700 shadow-2xl">
-            <h2 className="text-3xl font-bold text-gray-50 mb-6 border-b border-gray-700 pb-3">{current.title}</h2>
-            <IndustryDetailsContent current={current} />
-          </div>
-        </div>
-
-        {/* --- MOBILE VIEW (less than md:) --- */}
-        {/* Hides the accordion view on medium screens and up */}
-        <div className="md:hidden space-y-4">
-          {industriesData.map(ind => {
-            const isMobileOpen = openMobile === ind.id;
-            return (
-              <div 
-                key={ind.id} 
-                className="bg-gray-800 rounded-xl border-b-4 border-gray-700 overflow-hidden shadow-lg"
-              >
-                {/* Accordion Header/Button */}
-                <button
-                  onClick={() => toggleMobileOpen(ind.id)}
-                  className={`w-full text-left p-4 transition-all duration-300 ease-in-out 
-                    ${isMobileOpen ? 'bg-gray-700' : 'hover:bg-gray-800/80'}
-                  `}
-                >
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <h3 className={`font-bold text-lg ${isMobileOpen ? 'text-blue-400' : 'text-gray-100'}`}>{ind.title}</h3>
-                      <p className="text-gray-400 text-sm mt-1">{ind.summary}</p>
-                    </div>
-                    {isMobileOpen ? (
-                      <ChevronUpIcon className="w-6 h-6 text-blue-400 ml-4 flex-shrink-0 transition-transform" />
-                    ) : (
-                      <ChevronDownIcon className="w-6 h-6 text-gray-400 ml-4 flex-shrink-0 transition-transform" />
+          {/* --- MOBILE VIEW (less than md:) --- */}
+          <div className="md:hidden space-y-4">
+            {industriesData.map((ind, index) => {
+              const isMobileOpen = openMobile === ind.id;
+              return (
+                // Individual animation for each mobile accordion tile (Slide Up)
+                <AnimateOnScroll key={ind.id} delay={index * 150} duration="duration-600" direction="up">
+                  <div 
+                    className="bg-gray-800 rounded-xl border-b-4 border-gray-700 overflow-hidden shadow-lg"
+                  >
+                    {/* Accordion Header/Button */}
+                    <button
+                      onClick={() => toggleMobileOpen(ind.id)}
+                      className={`w-full text-left p-4 transition-all duration-300 ease-in-out 
+                        ${isMobileOpen ? 'bg-gray-700' : 'hover:bg-gray-800/80'}
+                      `}
+                    >
+                      <div className="flex justify-between items-center">
+                        <div>
+                          <h3 className={`font-bold text-lg ${isMobileOpen ? 'text-blue-400' : 'text-gray-100'}`}>{ind.title}</h3>
+                          <p className="text-gray-400 text-sm mt-1">{ind.summary}</p>
+                        </div>
+                        {isMobileOpen ? (
+                          <ChevronUpIcon className="w-6 h-6 text-blue-400 ml-4 flex-shrink-0 transition-transform" />
+                        ) : (
+                          <ChevronDownIcon className="w-6 h-6 text-gray-400 ml-4 flex-shrink-0 transition-transform" />
+                        )}
+                      </div>
+                    </button>
+                    
+                    {/* Accordion Content (Conditionally rendered) */}
+                    {isMobileOpen && (
+                      <div className="p-4 pt-0 transition-all duration-300 ease-in-out">
+                        <div className="border-t border-gray-700 pt-4">
+                          <h2 className="text-xl font-bold text-gray-50 mb-4">{ind.title}</h2>
+                          <IndustryDetailsContent current={ind} />
+                        </div>
+                      </div>
                     )}
                   </div>
-                </button>
-                
-                {/* Accordion Content (Conditionally rendered to control collapse) */}
-                {isMobileOpen && (
-                  <div className="p-4 pt-0 transition-all duration-300 ease-in-out">
-                    <div className="border-t border-gray-700 pt-4">
-                      {/* Title is repeated for context in the accordion content */}
-                      <h2 className="text-xl font-bold text-gray-50 mb-4">{ind.title}</h2>
-                      <IndustryDetailsContent current={ind} />
-                    </div>
-                  </div>
-                )}
-              </div>
-            );
-          })}
+                </AnimateOnScroll>
+              );
+            })}
+          </div>
+
+
         </div>
-
-
-      </div>
-      
-    </section>
-      </AnimateOnScroll>
+        
+      </section>
+    </AnimateOnScroll>
   );
 }
 

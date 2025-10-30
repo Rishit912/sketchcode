@@ -16,6 +16,7 @@ import Login from "./components/Login";
 import AdminDashboard from "./components/AdminDashboard";
 import TeamManagement from "./components/TeamManagement";
 import Team from './components/Team';
+import Preloader from './components/Preloader';
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
       </div>
 
       {/* Main Content */}
+      <Preloader>
       <div className="relative z-10">
         <Navbar />
         <Routes>
@@ -64,6 +66,7 @@ function App() {
       </Routes>
         <Footer />
       </div>
+      </Preloader>
 
       {/* Global Styles */}
       <style>

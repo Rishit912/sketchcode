@@ -10,8 +10,8 @@ const Team = () => {
 
   const fetchTeam = async () => {
     try {
-  // Use shared `api` instance for fetching team members (NO TOKEN IS PASSED)
-  const res = await api.get(`/api/team`);
+      // Use shared `api` instance for fetching team members (NO TOKEN IS PASSED)
+      const res = await api.get(`/api/team`);
       // Ensure oldest members appear first (createdAt ascending)
       const list = res.data || [];
       list.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
@@ -34,20 +34,24 @@ const Team = () => {
   }, []);
 
   return (
-    <AnimateOnScroll> {/* WRAPPED SECTION */}
-      <section className="relative z-10 bg-gray-900/95 text-gray-200 py-16 md:py-24 border-b-4 border-gray-700 min-h-screen"> {/* ADDED relative z-10 bg-gray-900/95 */}
+    <AnimateOnScroll duration="duration-1000"> {/* Outer wrapper for entire section */}
+      <section className="relative z-10 bg-gray-900/95 text-gray-200 py-16 md:py-24 border-b-4 border-gray-700 min-h-screen" id="team"> 
         <div className="container mx-auto px-6 lg:px-12">
-          <div className="text-center mb-12 md:mb-16">
-             <h1 className="text-4xl md:text-6xl font-extrabold text-gray-50 font-serif">
-    Our{" "}
-    <span className="text-6xl md:text-6xl text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
-      Team
-    </span>
-  </h1>
-            <p className="mt-4 max-w-3xl mx-auto text-lg md:text-xl text-gray-400">
-              Meet the people who build SketchCode.
-            </p>
-          </div>
+          
+          {/* Header - Slide Right */}
+          <AnimateOnScroll delay={100} duration="duration-700" direction="right">
+            <div className="text-center mb-12 md:mb-16">
+              <h1 className="text-4xl md:text-6xl font-extrabold text-gray-50 font-serif">
+                Meet Our{" "}
+                <span className="text-6xl md:text-6xl text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
+                  Team
+                </span>
+              </h1>
+              <p className="mt-4 max-w-3xl mx-auto text-lg md:text-xl text-gray-400">
+                Meet the people who build SketchCode.
+              </p>
+            </div>
+          </AnimateOnScroll>
 
           {loading ? (
             <div className="flex justify-center items-center h-40">
@@ -58,52 +62,60 @@ const Team = () => {
               <p className="text-gray-400 text-lg">No team members added yet.</p>
             </div>
           ) : (
+            // Team Grid - Individual Staggered Animation
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
-              {team.map((member) => (
-                <article key={member._id} className="bg-gray-800 rounded-2xl overflow-hidden shadow-xl transform transition-transform duration-300 hover:scale-[1.02] border border-gray-700 max-w-xs mx-auto w-full">
-                  <div className="flex items-center justify-center p-4 border-b border-gray-600">
-                    <div className="w-32 h-40 flex items-center justify-center">
-                      {member.imageUrl ? (
-                        <img src={member.imageUrl} alt={member.name} className="team-avatar" />
-                      ) : (
-                        <div className="w-24 h-24 rounded-full bg-gradient-to-tr from-blue-500 to-purple-600 flex items-center justify-center text-white text-2xl font-bold shadow-lg">
-                          {(() => {
-                            const name = (member.name || '').trim();
-                            if (!name) return '';
-                            const parts = name.split(/\s+/);
-                            if (parts.length === 1) return parts[0].substring(0, 2).toUpperCase();
-                            const first = parts[0][0] || '';
-                            const second = parts[parts.length - 1][0] || '';
-                            return (first + second).toUpperCase();
-                          })()}
-                        </div>
-                      )}
+              {team.map((member, index) => (
+                <AnimateOnScroll 
+                  key={member._id} 
+                  delay={index * 200 + 200} // Staggered delay for each card
+                  duration="duration-700"
+                  direction={index % 2 === 0 ? "left" : "right"} // Alternating direction
+                >
+                  <article className="bg-gray-800 rounded-2xl overflow-hidden shadow-xl transform transition-transform duration-300 hover:scale-[1.02] border border-gray-700 max-w-xs mx-auto w-full h-full flex flex-col">
+                    <div className="flex items-center justify-center p-4 border-b border-gray-600">
+                      <div className="w-32 h-40 flex items-center justify-center">
+                        {member.imageUrl ? (
+                          <img src={member.imageUrl} alt={member.name} className="team-avatar" />
+                        ) : (
+                          <div className="w-24 h-24 rounded-full bg-gradient-to-tr from-blue-500 to-purple-600 flex items-center justify-center text-white text-2xl font-bold shadow-lg">
+                            {(() => {
+                              const name = (member.name || '').trim();
+                              if (!name) return '';
+                              const parts = name.split(/\s+/);
+                              if (parts.length === 1) return parts[0].substring(0, 2).toUpperCase();
+                              const first = parts[0][0] || '';
+                              const second = parts[parts.length - 1][0] || '';
+                              return (first + second).toUpperCase();
+                            })()}
+                          </div>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                  <div className="p-6">
-                    <h3 className="text-xl font-semibold text-gray-100 mb-1">{member.name}</h3>
-                    <p className="text-blue-400 mb-3">{member.position}</p>
-                    <p className="text-gray-400 mb-4 line-clamp-3">{member.bio}</p>
+                    <div className="p-6 flex-grow">
+                      <h3 className="text-xl font-semibold text-gray-100 mb-1">{member.name}</h3>
+                      <p className="text-blue-400 mb-3">{member.position}</p>
+                      <p className="text-gray-400 mb-4 line-clamp-3">{member.bio}</p>
 
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {(member.skills || []).map((s, i) => (
-                        <span key={i} className="bg-gray-700 text-gray-200 px-2 py-1 rounded-full text-xs">{s}</span>
-                      ))}
-                    </div>
+                      <div className="flex flex-wrap gap-2 mb-4">
+                        {(member.skills || []).map((s, i) => (
+                          <span key={i} className="bg-gray-700 text-gray-200 px-2 py-1 rounded-full text-xs">{s}</span>
+                        ))}
+                      </div>
 
-                    <div className="flex gap-4 text-gray-400">
-                      {member.socialLinks?.linkedin && (
-                        <a href={member.socialLinks.linkedin} target="_blank" rel="noreferrer" className="hover:text-blue-500">LinkedIn</a>
-                      )}
-                      {member.socialLinks?.github && (
-                        <a href={member.socialLinks.github} target="_blank" rel="noreferrer" className="hover:text-gray-200">GitHub</a>
-                      )}
-                      {member.socialLinks?.twitter && (
-                        <a href={member.socialLinks.twitter} target="_blank" rel="noreferrer" className="hover:text-blue-400">Twitter</a>
-                      )}
+                      <div className="flex gap-4 text-gray-400">
+                        {member.socialLinks?.linkedin && (
+                          <a href={member.socialLinks.linkedin} target="_blank" rel="noreferrer" className="hover:text-blue-500">LinkedIn</a>
+                        )}
+                        {member.socialLinks?.github && (
+                          <a href={member.socialLinks.github} target="_blank" rel="noreferrer" className="hover:text-gray-200">GitHub</a>
+                        )}
+                        {member.socialLinks?.twitter && (
+                          <a href={member.socialLinks.twitter} target="_blank" rel="noreferrer" className="hover:text-blue-400">Twitter</a>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                </article>
+                  </article>
+                </AnimateOnScroll> 
               ))}
             </div>
           )}
