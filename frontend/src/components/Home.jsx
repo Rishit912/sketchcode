@@ -56,7 +56,7 @@ const Home = () => {
             
             {/* Tagline - Slide Down */}
             <AnimateOnScroll duration="duration-700" delay={200} direction="down">
-              <span className="bg-gray-800 shadow-md px-4 py-1 rounded-full text-gray-400 font-semibold mb-4 md:mb-6 flex items-center justify-center sm:justify-start gap-2 text-sm md:text-base border border-gray-700">
+              <span className="bg-gray-800 shadow-md px- py-1 rounded-full text-gray-400 font-semibold mb-4 md:mb-6 flex items-center justify-center sm:justify-start gap-2 text-sm md:text-base border border-gray-700">
                 <span className="text-yellow-400 text-base md:text-lg">★</span> Powered by Sketchcode
               </span>
             </AnimateOnScroll>
@@ -136,7 +136,7 @@ const Home = () => {
 
           {/* Animated Isometric Scene (Right Content) - Slide Down */}
           {/* Hiding on mobile: hidden lg:flex */}
-          <div className="hidden lg:flex flex-1 justify-center items-center mt-10 md:mt-0 relative md:ml-2">
+          <div className=" lg:flex flex-1 justify-center items-center mt-10 md:mt-0 relative md:ml-2">
             <AnimateOnScroll duration="duration-1000" delay={800} direction="down">
               <div className="relative w-[300px] md:w-[500px] h-[300px] md:h-[500px] perspective-1000">
                 {/* Main Device Frame */}
