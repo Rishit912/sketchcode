@@ -236,6 +236,7 @@ const Home = () => {
       {/* Page sections rendered on Home (single-page style) - these will use their own AnimateOnScroll wrappers */}
       <Industries />
       <AboutUs />
+      <Services />
       <ContactUs />
     </>
   );
