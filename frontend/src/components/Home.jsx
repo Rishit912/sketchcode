@@ -49,60 +49,68 @@ const Home = () => {
         <section 
           id="home" 
           // 💡 Responsive fix: Added pt-20 (for fixed navbar) and px-4 (for mobile padding)
-          className="relative z-10 bg-gray-900/95 flex flex-col md:flex-row justify-center md:justify-between items-center h-full text-gray-200 px-4 sm:px-6 md:px-12 pt-20 pb-12 md:py-12 border-b-0 md:border-b-4 md:border-gray-700 overflow-hidden"
+          className="relative z-10 bg-gray-900/95 flex flex-col md:flex-row justify-center md:justify-between items-center h-full text-gray-200 px-4 sm:px-6 md:px-12 pt-14 pb-12 md:py-12 border-b-0 md:border-b-4 md:border-gray-700 overflow-hidden"
         >
+          
           {/* Left Content Column */}
-          <div className="flex-1 flex flex-col justify-center max-w-xl mx-auto md:mx-0 md:items-start text-center sm:text-left mb-10 md:mb-0">
-            
-            {/* Tagline - Slide Down */}
-            <AnimateOnScroll duration="duration-700" delay={200} direction="down">
-             <span className="inline-flex items-center gap-2 bg-gray-800 border border-gray-700 text-gray-400 font-semibold text-sm md:text-base rounded-full px-3 py-1 shadow-md mb-3 md:mb-5 hover:scale-105 transition-transform duration-200">
-  <span className="text-yellow-400 text-base md:text-lg">★</span>
-  Powered by Sketchcode
-</span>
+          {/* 💡 FIX: Changed 'text-center sm:text-left' to 'text-center md:text-left' 
+             to enforce left alignment on desktop/tablet while keeping it centered on mobile. */}
+        <div className="flex-1 flex flex-col justify-center max-w-xl mx-auto md:mx-0 md:items-start text-left mb-10 md:mb-0">
+    
+    {/* Tagline - Slide Down */}
+    <AnimateOnScroll duration="duration-700" delay={200} direction="down">
+        {/* The 'inline-flex' and lack of text-alignment classes here means it aligns with the parent's text-alignment (now text-left) */}
+        <span className="inline-flex items-center gap-2 bg-gray-800 border border-gray-700 text-gray-400 font-semibold text-sm md:text-base rounded-full px-3 py-1 shadow-md mb-3 md:mb-5 hover:scale-105 transition-transform duration-200">
+            <span className="text-yellow-400 text-base md:text-lg">★</span>
+            Powered by Sketchcode
+        </span>
+    </AnimateOnScroll>
+    
+    
+    {/* Title - Slide Right */}
+    <AnimateOnScroll duration="duration-700" delay={400} direction="right">
+        {/* Inherits text-left from parent */}
+        <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight mb-4 text-gray-50">
+            Build Beautiful Websites & Apps
+            <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">That Grow Your Business</span>
+        </h1>
+    </AnimateOnScroll>
 
-            </AnimateOnScroll>
-            
-            
-            {/* Title - Slide Right */}
-            <AnimateOnScroll duration="duration-700" delay={400} direction="right">
-              <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight mb-4 text-gray-50">
-                Build Beautiful Websites & Apps
-                <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">That Grow Your Business</span>
-              </h1>
-            </AnimateOnScroll>
+    {/* Description - Slide Left */}
+    <AnimateOnScroll duration="duration-700" delay={600} direction="left">
+        {/* 💡 CHANGE APPLIED HERE: Added/Kept 'text-left' for explicit left alignment. 
+           (Note: text-justify is not generally recommended for accessibility/readability) */}
+        <p className="text-gray-400 text-sm md:text-lg mb-6 md:mb-8 px-0 text-left">
+            We design and build high-quality websites, mobile applications, and digital products —
+            from brand-forward UI/UX to robust backend systems and e‑commerce platforms.
+            Fast delivery, reliable maintenance, and real results.
+        </p>
+    </AnimateOnScroll>
+    
 
-            {/* Description - Slide Left */}
-            <AnimateOnScroll duration="duration-700" delay={600} direction="left">
-              <p className="text-gray-400 text-sm md:text-lg mb-6 md:mb-8 px-0">
-                We design and build high-quality websites, mobile applications, and digital products —
-                from brand-forward UI/UX to robust backend systems and e‑commerce platforms.
-                Fast delivery, reliable maintenance, and real results.
-              </p>
-            </AnimateOnScroll>
-            
-
-            {/* Service Tags - Slide Up & Stagger */}
-            <div className="flex flex-wrap justify-center sm:justify-start gap-2 md:gap-3 mb-6 md:mb-8">
-              {[
-                'Web Development', 'App Development', 'UI/UX & Web Design',
-                'E‑commerce', 'Custom Software', 'Maintenance & Support'
-              ].map((label, i) => (
-                // Individual animation for each tag
-                <AnimateOnScroll key={i} duration="duration-500" delay={700 + i * 100} direction="up">
-                  <span
+    {/* Service Tags - Slide Up & Stagger */}
+    {/* 💡 CHANGE APPLIED HERE: Changed 'justify-center md:justify-start' to 'justify-start' for left alignment */}
+    <div className="flex flex-wrap justify-start gap-2 md:gap-3 mb-6 md:mb-8">
+        {[
+            'Web Development', 'App Development', 'UI/UX & Web Design',
+            'E‑commerce', 'Custom Software', 'Maintenance & Support'
+        ].map((label, i) => (
+            // Individual animation for each tag
+            <AnimateOnScroll key={i} duration="duration-500" delay={700 + i * 100} direction="up">
+                <span
                     className="bg-gray-800 shadow-md px-3 py-2 rounded-full flex items-center justify-center gap-2 text-blue-400 font-medium text-sm md:text-base hover:scale-105 transition-transform duration-200 border border-gray-700"
-                  >
+                >
                     {label}
-                  </span>
-                </AnimateOnScroll>
-              ))}
-            </div>
+                </span>
+            </AnimateOnScroll>
+        ))}
+    </div>
 
             {/* Buttons - Slide Right (as a group) */}
+            {/* The 'justify-center sm:justify-start' on this div handles the button alignment responsively */}
             <AnimateOnScroll duration="duration-700" delay={1300} direction="right">
-              <div className="flex flex-col sm:flex-row justify-center sm:justify-start gap-3 md:gap-4 mb-8 md:mb-10 w-full sm:w-auto">
+              <div className="flex flex-col sm:flex-row justify-center md:justify-start gap-3 md:gap-4 mb-8 md:mb-10 w-full sm:w-auto">
                 <Link to="/contact" className="w-full sm:w-auto"> {/* Using Link for internal navigation */}
                   <button className="flex items-center justify-center w-full sm:w-auto gap-2 bg-white text-blue-600 font-semibold px-5 md:px-6 py-2.5 md:py-3 rounded-full shadow transition transform hover:scale-105 text-sm md:text-base">
                     Get a Free Demo
@@ -123,7 +131,7 @@ const Home = () => {
                 <span className="text-2xl md:text-4xl font-extrabold text-blue-400 tracking-wide font-poppins animate-pulse-fast">
                   Our Goals:
                 </span>
-                <div className="flex flex-wrap justify-center sm:justify-start gap-3 md:gap-4">
+                <div className="flex flex-wrap justify-center md:justify-start gap-3 md:gap-4">
                   {goals.map((goal, index) => (
                     <span
                       key={index}
@@ -148,7 +156,7 @@ const Home = () => {
                   <div className="absolute inset-2 bg-blue-900/30 rounded-lg overflow-hidden backdrop-blur-sm p-4 flex flex-col justify-between">
                     <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20"></div>
                     <div className="relative z-10 text-center">
-                      <h3 className="text-xl md:text-2xl font-bold text-gray-50 mb-1 animate-pulse-light">Sketchcode</h3> {/* Your Company Name */}
+                      <h3 className="text-xl md:text-2xl font-bold text-gray-50 mb-1 animate-pulse-light">Sketchcode</h3> {/* Your Company Name */} <br />
                       <p className="text-xs md:text-sm text-blue-200 mb-3"> we turn visionary ideas into exceptional digital realities. Our mission: to create powerful digital solutions that are a joy to build and use.</p> {/* Your Tagline */}
                       <div className="bg-blue-600/50 h-1.5 w-3/4 mx-auto rounded-full mb-2 animate-pulse-slow"></div>
                       <div className="bg-purple-600/50 h-1.5 w-1/2 mx-auto rounded-full animate-pulse-slow delay-300"></div>

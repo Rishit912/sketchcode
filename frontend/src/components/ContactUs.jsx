@@ -73,7 +73,7 @@ const ContactUs = () => {
                 <div>
                   <h3 className="text-xl font-semibold text-gray-50">Email Support</h3>
                   <p className="text-gray-400">We aim to reply within 24 hours.</p>
-                  <a href="mailto:support@sketchcode.com" className="text-blue-400 hover:underline">
+                  <a href="mailto:sketchcode.dev@gmail.com" className="text-blue-400 hover:underline">
                     sketchcode.dev@gmail.com
                   </a>
                 </div>
@@ -89,22 +89,25 @@ const ContactUs = () => {
                 </div>
               </div>
 
-              {/* Info Card 3: Phone (Placeholder) */}
+              {/* Info Card 3: Phone / WhatsApp */}
               <div className="flex items-start bg-gray-800/80 p-6 rounded-xl shadow-md border border-gray-700 hover:border-blue-500 transition duration-300">
-                {/* Corrected phone icon direction */}
                 <FaPhone className="text-blue-400 text-2xl mt-1 mr-4 flex-shrink-0 transform -scale-x-100" />
                 <div>
                   <h3 className="text-xl font-semibold text-gray-50">Schedule a Call</h3>
                   <p className="text-gray-400">Book a quick discovery meeting.</p>
-                  <a href="/schedule" className="text-blue-400 hover:underline">
-                    Book Now
-                  </a>
+                 <a
+  href="https://wa.me/919909345049?text=Hi%2C%20I%E2%80%99d%20like%20to%20schedule%20a%20call%20with%20SketchCode."
+  target="_blank"
+  rel="noopener noreferrer"
+  className="text-blue-400 hover:underline"
+>
+  Get a free consultation
+</a>
+
                 </div>
               </div>
             </div> 
           </AnimateOnScroll>
-          {/* ⬆️ THIS IS THE MISSING CLOSING TAG THAT RESOLVES THE ERROR ⬆️ */}
-
 
           {/* --- 3. Contact Form Card - Slide Left --- */}
           <AnimateOnScroll delay={500} duration="duration-800" direction="left">
@@ -161,7 +164,7 @@ const ContactUs = () => {
                       </>
                     ) : (
                       <>
-                        <FaPaperPlane  /> Send Message
+                        <FaPaperPlane /> Send Message
                       </>
                     )}
                   </button>
