@@ -100,15 +100,15 @@ function Preloader({ children }) {
           </div>
         </div>
 
-        {/* TEXT AREA */}
-        <div className="opacity-0 animate-brand-reveal">
-          <h1 className="text-6xl sm:text-7xl font-extrabold tracking-widest leading-none text-white drop-shadow-[0_0_25px_rgba(59,130,246,0.5)]">
+        {/* TEXT AREA (✅ Added padding for mobile view) */}
+        <div className="opacity-0 animate-brand-reveal px-6 sm:px-0 text-center">
+          <h1 className="text-5xl sm:text-7xl font-extrabold tracking-widest leading-tight text-white drop-shadow-[0_0_25px_rgba(59,130,246,0.5)]">
             Sketch
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-500 animate-text-glow">
               code
             </span>
           </h1>
-          <p className="mt-4 text-lg sm:text-xl font-light text-blue-300/80 tracking-wide animate-sub-reveal">
+          <p className="mt-4 text-base sm:text-xl font-light text-blue-300/80 tracking-wide animate-sub-reveal">
             Innovating Tomorrow, One Line at a Time.
           </p>
         </div>
