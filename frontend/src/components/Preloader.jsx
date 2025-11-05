@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Logo from "../assets/logo.png"; // ✅ Your logo
+// Removed: import Logo from "../assets/logo.png"; // No longer needed
 
 const MIN_LOAD_TIME = 3500;
 
@@ -8,7 +8,9 @@ function Preloader({ children }) {
   const [isFading, setIsFading] = useState(false);
 
   useEffect(() => {
+    // Start fade out after minimum load time
     const timer = setTimeout(() => setIsFading(true), MIN_LOAD_TIME);
+    // Completely hide component after fade out duration (1200ms)
     const hideTimer = setTimeout(() => setIsLoading(false), MIN_LOAD_TIME + 1200);
     return () => {
       clearTimeout(timer);
@@ -30,7 +32,7 @@ function Preloader({ children }) {
         {/* Smooth dark-blue gradient breathing */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(37,99,235,0.12),_rgba(0,0,0,0.9))] animate-bg-breathe"></div>
 
-        {/* Soft glowing grid lines */}
+        {/* Soft glowing grid lines (No changes needed) */}
         <div className="absolute inset-0 opacity-[0.08]">
           {[...Array(15)].map((_, i) => (
             <div
@@ -48,7 +50,7 @@ function Preloader({ children }) {
           ))}
         </div>
 
-        {/* Floating digital particles */}
+        {/* Floating digital particles (No changes needed) */}
         {[...Array(25)].map((_, i) => (
           <div
             key={i}
@@ -62,7 +64,7 @@ function Preloader({ children }) {
           ></div>
         ))}
 
-        {/* Occasional tech streaks (data movement lines) */}
+        {/* Occasional tech streaks (data movement lines) (No changes needed) */}
         {[...Array(8)].map((_, i) => (
           <div
             key={i}
@@ -80,18 +82,19 @@ function Preloader({ children }) {
 
       {/* === MAIN CONTENT === */}
       <div className="text-center relative z-10 flex flex-col items-center">
-        {/* LOGO AREA */}
+        {/* LOGO AREA - Now displays RD text */}
         <div className="relative w-36 h-36 flex items-center justify-center mb-10">
           {/* Glow aura */}
           <div className="absolute inset-0 rounded-full blur-3xl bg-blue-500/10 animate-glowPulse"></div>
 
-          {/* Logo Core */}
+          {/* Logo Core (Text based) */}
           <div className="relative w-28 h-28 bg-[#0b0b1a]/90 rounded-2xl border border-blue-400/40 shadow-[0_0_40px_rgba(59,130,246,0.6)] flex items-center justify-center overflow-hidden animate-glow-breathe">
-            <img
-              src={Logo}
-              alt="SketchCode Logo"
-              className="w-20 h-20 object-contain animate-logoFloat"
-            />
+            
+            {/* --- RD Text Logo --- */}
+            <span className="text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400 animate-logoFloat">
+              RD
+            </span>
+            {/* ---------------------- */}
 
             {/* Light sweep */}
             <div className="absolute inset-0 overflow-hidden">
@@ -100,21 +103,21 @@ function Preloader({ children }) {
           </div>
         </div>
 
-        {/* TEXT AREA (✅ Added padding for mobile view) */}
+        {/* TEXT AREA (Customized for Rishit Dangi) */}
         <div className="opacity-0 animate-brand-reveal px-6 sm:px-0 text-center">
           <h1 className="text-5xl sm:text-7xl font-extrabold tracking-widest leading-tight text-white drop-shadow-[0_0_25px_rgba(59,130,246,0.5)]">
-            Sketch
+            Rishit
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-500 animate-text-glow">
-              code
+              Dangi
             </span>
           </h1>
           <p className="mt-4 text-base sm:text-xl font-light text-blue-300/80 tracking-wide animate-sub-reveal">
-            Innovating Tomorrow, One Line at a Time.
+            Building Robust Digital Experiences.
           </p>
         </div>
       </div>
 
-      {/* === ANIMATIONS === */}
+      {/* === ANIMATIONS (No changes needed) === */}
       <style>{`
         /* BACKGROUND */
         @keyframes bg-breathe {
