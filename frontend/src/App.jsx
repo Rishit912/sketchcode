@@ -17,6 +17,11 @@ import AdminDashboard from "./components/AdminDashboard";
 import TeamManagement from "./components/TeamManagement";
 import Team from './components/Team';
 import Preloader from './components/Preloader';
+import food from './assets/food.png';
+import ecom from './assets/ecom.png';
+import manufacturing from './assets/manu.png';
+import automotive from './assets/auto.png';
+import education from './assets/edu.png';
 
 function App() {
   return (
