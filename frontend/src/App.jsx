@@ -2,26 +2,24 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import React from 'react'
 import Navbar from './components/Navbar'
 import './index.css'
-import './assets/logo.png'
 import About from './components/AboutUs'
-import Services from './components/Services'
 import Portfolio from './components/Portfolio'
 import Contact from './components/ContactUs'
 import Footer from './components/Footer'
 import Home from './components/Home'
-import Industries from './components/Industries'
-import Testimonials from './components/Testimonials'
-import Careers from './components/Careers'
 import Login from "./components/Login";
+import TechStack from "./components/TechStack";
 import AdminDashboard from "./components/AdminDashboard";
-import TeamManagement from "./components/TeamManagement";
-import Team from './components/Team';
 import Preloader from './components/Preloader';
+<<<<<<< HEAD
 import food from './assets/food.png';
 import ecom from './assets/ecom.png';
 import manufacturing from './assets/manu.png';
 import automotive from './assets/auto.png';
 import education from './assets/edu.png';
+=======
+import resume from './assets/Dangi_Rishit_.pdf';
+>>>>>>> 4bdeffe547b302a19f3c8e7e4dbd2ef32a76a35d
 
 function App() {
   return (
@@ -54,11 +52,8 @@ function App() {
         <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
-        <Route path="/services" element={<Services />} />
+         <Route path="/techstack" element={<TechStack />} />
         <Route path="/portfolio" element={<Portfolio />} />
-  <Route path="/industries" element={<Industries />} />
-  <Route path="/testimonials" element={<Testimonials />} />
-  <Route path="/careers" element={<Careers />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/login" element={<Login />} />
     <Route path="/admin-dashboard" element={<AdminDashboard />} />
@@ -66,7 +61,6 @@ function App() {
       when navigating to team management. AdminDashboard will detect the path and render the
       appropriate embedded view (projects or team). */}
     <Route path="/admin/team" element={<AdminDashboard />} />
-  <Route path="/team" element={<Team />} />
         <Route path="*" element={<Home />} />
       </Routes>
         <Footer />

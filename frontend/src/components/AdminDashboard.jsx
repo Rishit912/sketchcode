@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { FaEdit, FaExternalLinkAlt, FaPlus, FaTrash } from "react-icons/fa";
 import UploadProjectForm from "./UploadProjectForm";
 import { Link, useLocation } from 'react-router-dom';
-import TeamManagement from './TeamManagement';
 
 // Using shared `api` instance from ../api.js — no inline base URL required
 
