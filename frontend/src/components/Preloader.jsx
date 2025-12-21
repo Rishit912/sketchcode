@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-// Removed: import Logo from "../assets/logo.png"; // No longer needed
+import Logo from "../assets/logo.png"; // No longer needed
 
 const MIN_LOAD_TIME = 3500;
 
@@ -88,21 +88,18 @@ function Preloader({ children }) {
           <div className="absolute inset-0 rounded-full blur-3xl bg-blue-500/10 animate-glowPulse"></div>
 
           {/* Logo Core (Text based) */}
-          <div className="relative w-28 h-28 bg-[#0b0b1a]/90 rounded-2xl border border-blue-400/40 shadow-[0_0_40px_rgba(59,130,246,0.6)] flex items-center justify-center overflow-hidden animate-glow-breathe">
-<<<<<<< HEAD
+          <div className="relatāive w-28 h-28 bg-[#0b0b1a]/90 rounded-2xl border border-blue-400/40 shadow-[0_0_40px_rgba(59,130,246,0.6)] flex items-center justify-center overflow-hidden animate-glow-breathe">
             <img
               src={Logo}
               alt="FlitCode Logo"
               className="w-20 h-20 object-contain animate-logoFloat"
             />
-=======
             
             {/* --- RD Text Logo --- */}
             <span className="text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400 animate-logoFloat">
               RD
             </span>
             {/* ---------------------- */}
->>>>>>> 4bdeffe547b302a19f3c8e7e4dbd2ef32a76a35d
 
             {/* Light sweep */}
             <div className="absolute inset-0 overflow-hidden">
@@ -114,15 +111,10 @@ function Preloader({ children }) {
         {/* TEXT AREA (Customized for Rishit Dangi) */}
         <div className="opacity-0 animate-brand-reveal px-6 sm:px-0 text-center">
           <h1 className="text-5xl sm:text-7xl font-extrabold tracking-widest leading-tight text-white drop-shadow-[0_0_25px_rgba(59,130,246,0.5)]">
-<<<<<<< HEAD
             Flit
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-500 animate-text-glow">
               Code
-=======
-            Rishit
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-500 animate-text-glow">
-              Dangi
->>>>>>> 4bdeffe547b302a19f3c8e7e4dbd2ef32a76a35d
+            
             </span>
           </h1>
           <p className="mt-4 text-base sm:text-xl font-light text-blue-300/80 tracking-wide animate-sub-reveal">
