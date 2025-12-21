@@ -11,15 +11,11 @@ import Login from "./components/Login";
 import TechStack from "./components/TechStack";
 import AdminDashboard from "./components/AdminDashboard";
 import Preloader from './components/Preloader';
-<<<<<<< HEAD
 import food from './assets/food.png';
 import ecom from './assets/ecom.png';
 import manufacturing from './assets/manu.png';
 import automotive from './assets/auto.png';
 import education from './assets/edu.png';
-=======
-import resume from './assets/Dangi_Rishit_.pdf';
->>>>>>> 4bdeffe547b302a19f3c8e7e4dbd2ef32a76a35d
 
 function App() {
   return (
