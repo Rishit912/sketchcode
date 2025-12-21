@@ -5,6 +5,7 @@ import React, { useRef, useEffect, useState } from 'react';
 // Define the component, accepting a new 'direction' prop
 const AnimateOnScroll = ({ children, delay = 0, duration = 'duration-1000', direction = 'up' }) => {
   const ref = useRef(null);
+  
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {

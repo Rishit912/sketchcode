@@ -89,7 +89,7 @@ function Preloader({ children }) {
           <div className="relative w-28 h-28 bg-[#0b0b1a]/90 rounded-2xl border border-blue-400/40 shadow-[0_0_40px_rgba(59,130,246,0.6)] flex items-center justify-center overflow-hidden animate-glow-breathe">
             <img
               src={Logo}
-              alt="SketchCode Logo"
+              alt="FlitCode Logo"
               className="w-20 h-20 object-contain animate-logoFloat"
             />
 
@@ -103,9 +103,9 @@ function Preloader({ children }) {
         {/* TEXT AREA (✅ Added padding for mobile view) */}
         <div className="opacity-0 animate-brand-reveal px-6 sm:px-0 text-center">
           <h1 className="text-5xl sm:text-7xl font-extrabold tracking-widest leading-tight text-white drop-shadow-[0_0_25px_rgba(59,130,246,0.5)]">
-            Sketch
+            Flit
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-500 animate-text-glow">
-              code
+              Code
             </span>
           </h1>
           <p className="mt-4 text-base sm:text-xl font-light text-blue-300/80 tracking-wide animate-sub-reveal">

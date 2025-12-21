@@ -88,11 +88,11 @@ const AboutUs = () => {
               <h1 className="text-4xl md:text-6xl font-extrabold text-gray-50">
                 We are{" "}
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
-                  SketchCode
+                  FlitCode
                 </span>
               </h1>
               <p className="mt-4 text-gray-400 max-w-3xl mx-auto">
-                At SketchCode, we turn visionary ideas into exceptional digital
+                At FlitCode, we turn visionary ideas into exceptional digital
                 realities. Our mission: to create powerful digital solutions that
                 are a joy to build and use.
               </p>
@@ -109,7 +109,7 @@ const AboutUs = () => {
                 </span>
               </h2>
               <p className="text-gray-300 text-lg mb-4 text-center md:text-left">
-                The idea for SketchCode was born from a simple belief: that
+                The idea for FlitCode was born from a simple belief: that
                 technology should be a force for positive change. We started
                 with a strong focus on clean code, thoughtful design, and direct
                 communication — building a company grounded in lasting quality.
@@ -204,7 +204,7 @@ const AboutUs = () => {
               <h2 className="text-3xl md:text-5xl font-extrabold text-gray-50 text-center mb-4">
                 Why Choose{" "}
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
-                  SketchCode
+                  FlitCode
                 </span>
               </h2>
               <p className="text-gray-400 max-w-3xl mx-auto text-lg text-center mb-8">
@@ -262,12 +262,12 @@ const AboutUs = () => {
                 </span>
               </h3>
               <p className="text-gray-400 max-w-3xl mx-auto mb-4">
-                “At SketchCode, we believe technology should empower creativity.
+                “At FlitCode, we believe technology should empower creativity.
                 Our mission is to make innovation accessible to everyone — one
                 smart product at a time.”
               </p>
               <div className="text-sm text-gray-400">
-                Founder & CEO, SketchCode
+                Founder & CEO, FlitCode
               </div>
             </div>
           </AnimateOnScroll>

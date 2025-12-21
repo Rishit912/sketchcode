@@ -16,7 +16,7 @@ const Footer = () => {
           <div className="flex flex-col items-center md:items-start text-center md:text-left">
             <Link to="/" onClick={handleNavClick} className="inline-flex items-center gap-3 mb-4 no-underline">
               <FaCode className="text-blue-400 text-3xl" aria-hidden="true" />
-              <span className="text-2xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">SketchCode</span>
+              <span className="text-2xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">FlitCode</span>
             </Link>
             <p className="text-sm text-gray-400">Empowering businesses with elegant digital experiences — Web, Mobile & Design.</p>
           </div>
@@ -51,19 +51,19 @@ const Footer = () => {
           <div className="flex flex-col items-center md:items-start text-center md:text-left">
             <h3 className="text-sm font-semibold text-gray-100 mb-4">Get in touch</h3>
             <p className="text-sm text-gray-300 mb-4">Gujarat, India<br />
-              <a className="text-blue-400 hover:underline" href="mailto:SketchCode9@gmail.com">sketchcode.dev@gmail.com</a>
+              <a className="text-blue-400 hover:underline" href="mailto:flitcode.dev@gmail.com">flitcode.dev@gmail.com</a>
             </p>
             <div className="flex gap-4">
               {/* <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="text-gray-300 hover:text-blue-400"><FaFacebook /></a> */}
               {/* <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter" className="text-gray-300 hover:text-blue-400"><FaTwitter /></a> */}
               <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="text-gray-300 hover:text-blue-400"><FaLinkedin /></a>
-              <a href="https://www.instagram.com/sketchcode__?igsh=ejcxb2Y0MnpnMHlj" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-gray-300 hover:text-blue-400"><FaInstagram /></a>
+              <a href="https://www.instagram.com/FlitCode?igsh=ejcxb2Y0MnpnMHlj" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-gray-300 hover:text-blue-400"><FaInstagram /></a>
             </div>
           </div>
         </div>
 
         <div className="mt-10 border-t border-gray-800 pt-6 flex flex-col md:flex-row items-center justify-between text-sm text-gray-400">
-          <div className="mb-3 md:mb-0">© {new Date().getFullYear()} <span className="font-semibold text-blue-400">SketchCode</span>. All rights reserved.</div>
+          <div className="mb-3 md:mb-0">© {new Date().getFullYear()} <span className="font-semibold text-blue-400">FlitCode</span>. All rights reserved.</div>
           <div className="flex gap-4">
             <Link to="/privacy" onClick={handleNavClick} className="hover:text-blue-400 transition">Privacy</Link>
             <Link to="/terms" onClick={handleNavClick} className="hover:text-blue-400 transition">Terms</Link>

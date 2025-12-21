@@ -73,8 +73,8 @@ const ContactUs = () => {
                 <div>
                   <h3 className="text-xl font-semibold text-gray-50">Email Support</h3>
                   <p className="text-gray-400">We aim to reply within 24 hours.</p>
-                  <a href="mailto:sketchcode.dev@gmail.com" className="text-blue-400 hover:underline">
-                    sketchcode.dev@gmail.com
+                  <a href="mailto:flitcode.dev@gmail.com" className="text-blue-400 hover:underline">
+                    flitcode.dev@gmail.com
                   </a>
                 </div>
               </div>
@@ -96,7 +96,7 @@ const ContactUs = () => {
                   <h3 className="text-xl font-semibold text-gray-50">Schedule a Call</h3>
                   <p className="text-gray-400">Book a quick discovery meeting.</p>
                  <a
-  href="https://wa.me/919909345049?text=Hi%2C%20I%E2%80%99d%20like%20to%20schedule%20a%20call%20with%20SketchCode."
+  href="https://wa.me/919909345049?text=Hi%2C%20I%E2%80%99d%20like%20to%20schedule%20a%20call%20with%20FlitCode."
   target="_blank"
   rel="noopener noreferrer"
   className="text-blue-400 hover:underline"

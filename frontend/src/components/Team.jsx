@@ -48,7 +48,7 @@ const Team = () => {
                 </span>
               </h1>
               <p className="mt-4 max-w-3xl mx-auto text-lg md:text-xl text-gray-400">
-                Meet the people who build SketchCode.
+                Meet the people who build FlitCode.
               </p>
             </div>
           </AnimateOnScroll>

@@ -6,7 +6,7 @@ const testimonials = [
     name: 'Anjali Patel',
     role: 'Founder, Cafe Bloom',
     quote:
-      'SketchCode rebuilt our website and online ordering system — sales grew 32% in three months and the admin panel is a joy to use.',
+      'FlitCode rebuilt our website and online ordering system — sales grew 32% in three months and the admin panel is a joy to use.',
   },
   {
     name: 'Rajat Mehra',
@@ -39,7 +39,7 @@ const Testimonials = () => {
             </span>
           </h1>
           <p className="mt-4 text-gray-400 max-w-3xl mx-auto text-lg md:text-xl">
-            Real feedback from clients who trusted SketchCode to bring their ideas to life.
+            Real feedback from clients who trusted FlitCode to bring their ideas to life.
           </p>
         </AnimateOnScroll>
 

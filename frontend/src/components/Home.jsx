@@ -62,7 +62,7 @@ const Home = () => {
         {/* The 'inline-flex' and lack of text-alignment classes here means it aligns with the parent's text-alignment (now text-left) */}
         <span className="inline-flex items-center gap-2 bg-gray-800 border border-gray-700 text-gray-400 font-semibold text-sm md:text-base rounded-full px-3 py-1 shadow-md mb-3 md:mb-5 hover:scale-105 transition-transform duration-200">
             <span className="text-yellow-400 text-base md:text-lg">★</span>
-            Powered by Sketchcode
+            Powered by FlitCode
         </span>
     </AnimateOnScroll>
     
@@ -156,7 +156,7 @@ const Home = () => {
                   <div className="absolute inset-2 bg-blue-900/30 rounded-lg overflow-hidden backdrop-blur-sm p-4 flex flex-col justify-between">
                     <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20"></div>
                     <div className="relative z-10 text-center">
-                      <h3 className="text-xl md:text-2xl font-bold text-gray-50 mb-1 animate-pulse-light">Sketchcode</h3> {/* Your Company Name */} <br />
+                      <h3 className="text-xl md:text-2xl font-bold text-gray-50 mb-1 animate-pulse-light">FlitCode</h3> {/* Your Company Name */} <br />
                       <p className="text-xs md:text-sm text-blue-200 mb-3"> we turn visionary ideas into exceptional digital realities. Our mission: to create powerful digital solutions that are a joy to build and use.</p> {/* Your Tagline */}
                       <div className="bg-blue-600/50 h-1.5 w-3/4 mx-auto rounded-full mb-2 animate-pulse-slow"></div>
                       <div className="bg-purple-600/50 h-1.5 w-1/2 mx-auto rounded-full animate-pulse-slow delay-300"></div>

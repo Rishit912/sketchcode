@@ -44,7 +44,7 @@ const Careers = () => {
               <h1 className="text-4xl md:text-6xl font-extrabold leading-tight tracking-tight text-gray-50">
                 Careers at{" "}
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-500">
-                  SketchCode
+                  FlitCode
                 </span>
               </h1>
               <p className="mt-4 max-w-3xl mx-auto text-lg md:text-xl text-gray-400">
@@ -65,7 +65,7 @@ const Careers = () => {
                                h-full flex flex-col justify-between">
                 <div>
                   <h3 className="text-xl font-bold text-gray-100 mb-3">
-                    Why join SketchCode?
+                    Why join FlitCode?
                   </h3>
                   <ul className="text-gray-300 list-disc list-inside space-y-2">
                     <li>
@@ -130,7 +130,7 @@ const Careers = () => {
               <h2 className="text-4xl md:text-6xl font-extrabold leading-tight tracking-tight text-gray-50 text-center">
                 Why Join{" "}
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-500">
-                  SketchCode
+                  FlitCode
                 </span>
               </h2>
               <br />
@@ -176,7 +176,7 @@ const Careers = () => {
                 and innovators who want to make an impact.
               </p>
               <a
-                href="mailto:sketchcode.dev@gmail.com"
+                href="mailto:flitcode.dev@gmail.com"
                 className="bg-white text-blue-600 font-bold px-8 py-4 rounded-full shadow-lg hover:bg-gray-100 transition-colors duration-300 transform hover:scale-105"
               >
                 Send CV & Portfolio

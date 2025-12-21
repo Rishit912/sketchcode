@@ -37,7 +37,7 @@ const Navbar = () => {
     <nav className="bg-gray-900 text-white px-6 py-4 flex justify-between items-center border-b border-gray-800 sticky top-0 z-50">
       {/* Logo */}
       <Link to="/" className="flex items-center space-x-2">
-        <img src={logo} alt="SketchCode logo" className="h-12 w-auto" />
+        <img src={logo} alt="Flitcode" className="h-12 w-auto" />
       </Link>
 
       {/* Desktop Menu */}
