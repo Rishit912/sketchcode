@@ -2,11 +2,11 @@ const express = require("express");
 const mongoose = require("mongoose");
 require("dotenv").config();
 const cors = require("cors");
-const connectDB = require("./config/db");
-const authRoute = require("./routes/authRoute");
-const projectRoutes = require("./routes/projectRoute");
-const teamRoutes = require("./routes/teamRoute");
-const User = require("./modles/user"); // Add this line
+const connectDB = require("../config/db");
+const authRoute = require("../routes/authRoute");
+const projectRoutes = require("../routes/projectRoute");
+const teamRoutes = require("../routes/teamRoute");
+const User = require("../modles/user"); // Add this line
 const jwt = require("jsonwebtoken"); // Add this line
 
 const PORT = process.env.PORT || 8001;
@@ -19,10 +19,11 @@ app.use(express.json());
 // CORS Configuration (CRITICAL FIX)
 // Replace these with your actual domains
 const allowedOrigins = [
-    'http://localhost:8001', 
-    'https://sketchcode-alpha.vercel.app', // <--- YOUR VERCEL URL
-    'https://sketchcode.onrender.com', // <--- Your Render URL (optional, but safe)
-    'https://sketchcode.one' // <--- YOUR CUSTOM DOMAIN
+    'http://localhost:3000', 
+    'http://localhost:5173',
+    'https://www.flitcode.app', // Your custom domain
+    'https://flitcode.app',     // Root custom domain
+    'https://flitcode.vercel.app' // Vercel fallback
 ];
 
 app.use(cors({
