@@ -1,168 +1,253 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { 
-  FaGithub, FaLinkedin, FaInstagram, FaFacebook, 
-  FaCodeBranch, FaServer, FaDesktop, FaCloud, 
-  FaExternalLinkAlt 
-} from 'react-icons/fa';
-import AnimateOnScroll from './AnimateOnScroll';
+import Services from './Services';
 import AboutUs from './AboutUs';
-import TechStack from './TechStack';
-import ContactUs from './ContactUs';
+import Industries from './Industries';
+import Team from './Team';
 import Portfolio from './Portfolio';
+import Testimonials from './Testimonials';
+import Careers from './Careers';
+import ContactUs from './ContactUs';
+import AnimateOnScroll from './AnimateOnScroll'; // ADDED
 
-// Company-focused taglines
-const taglines = [
-  "Enterprise Software Solutions",
-  "High-Performance Web Apps",
-  "Scalable Cloud Architecture",
-  "Modern UI/UX Design",
-  "MERN Stack Experts",
-  "Next.js Performance",
-  "Problem Solvers",
+import {
+  FaMobileAlt, FaPalette, FaCode, FaRegSmile, FaRegLightbulb, FaRegHandshake,
+  FaArrowLeft, FaArrowRight, FaUser, FaComments, FaChartBar, FaCog, FaEnvelope,
+  FaCloud, // New: for cloud services/deployment
+  FaServer, // New: for backend/server
+  FaCodeBranch, // New: for version control/development
+  FaDesktop, // New: for web/desktop development
+} from 'react-icons/fa';
+
+const goals = [
+  { text: 'Client Satisfaction', icon: <FaRegHandshake size={20} color="#60a5fa" /> },
+  { text: 'Innovative Solutions', icon: <FaRegLightbulb size={20} color="#60a5fa" /> },
+  { text: 'Happy Clients', icon: <FaRegSmile size={20} color="#60a5fa" /> },
 ];
 
-const skillTags = ['Next.js', 'React', 'Node.js', 'Tailwind', 'Cloud Native'];
-
 const Home = () => {
-  const [taglineIndex, setTaglineIndex] = useState(0);
+  const [radius, setRadius] = useState(180);
 
   useEffect(() => {
-    const intervalId = setInterval(() => {
-      setTaglineIndex(prevIndex => (prevIndex + 1) % taglines.length);
-    }, 3000);
-    return () => clearInterval(intervalId);
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setRadius(120);
+      } else {
+        setRadius(180);
+      }
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   return (
     <>
-      <section 
-        id="home" 
-        className="relative z-10 bg-gray-900 flex flex-col md:flex-row justify-center md:justify-between items-center min-h-screen text-gray-200 px-6 md:px-12 pt-20 pb-12 border-b-4 border-gray-800 overflow-hidden"
-      >
-        {/* LEFT CONTENT: Text & CTA */}
-        <div className="flex-1 flex flex-col justify-center items-center md:items-start text-center md:text-left mb-10 md:mb-0 max-w-2xl">
+      {/* Outer wrapper: This should generally use the default 'up' direction for the first element */}
+      <AnimateOnScroll duration="duration-1500" direction="up"> 
+        <section 
+          id="home" 
+          // 💡 Responsive fix: Added pt-20 (for fixed navbar) and px-4 (for mobile padding)
+          className="relative z-10 bg-gray-900/95 flex flex-col md:flex-row justify-center md:justify-between items-center h-full text-gray-200 px-4 sm:px-6 md:px-12 pt-14 pb-12 md:py-12 border-b-0 md:border-b-4 md:border-gray-700 overflow-hidden"
+        >
           
-          <AnimateOnScroll duration="duration-700" direction="down" delay={200}> 
-            <span className="bg-gray-800 border border-purple-500/30 px-4 py-1.5 rounded-full text-purple-400 font-semibold mb-6 flex items-center gap-2 text-sm md:text-base">
-              <span className="text-white text-lg">✨</span> Ready to Innovate
-            </span>
-          </AnimateOnScroll>
-          
-          <AnimateOnScroll duration="duration-700" direction="right" delay={400}>
-            <h1 className="text-5xl md:text-7xl font-extrabold leading-tight mb-4 text-gray-50">
-              Build Beautiful <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
-                Apps That Scale
-              </span>
-            </h1>
-          </AnimateOnScroll>
+          {/* Left Content Column */}
+          {/* 💡 FIX: Changed 'text-center sm:text-left' to 'text-center md:text-left' 
+             to enforce left alignment on desktop/tablet while keeping it centered on mobile. */}
+        <div className="flex-1 flex flex-col justify-center max-w-xl mx-auto md:mx-0 md:items-start text-left mb-10 md:mb-0">
+    
+    {/* Tagline - Slide Down */}
+    <AnimateOnScroll duration="duration-700" delay={200} direction="down">
+        {/* The 'inline-flex' and lack of text-alignment classes here means it aligns with the parent's text-alignment (now text-left) */}
+        <span className="inline-flex items-center gap-2 bg-gray-800 border border-gray-700 text-gray-400 font-semibold text-sm md:text-base rounded-full px-3 py-1 shadow-md mb-3 md:mb-5 hover:scale-105 transition-transform duration-200">
+            <span className="text-yellow-400 text-base md:text-lg">★</span>
+            Powered by FlitCode
+        </span>
+    </AnimateOnScroll>
+    
+    
+    {/* Title - Slide Right */}
+    <AnimateOnScroll duration="duration-700" delay={400} direction="right">
+        {/* Inherits text-left from parent */}
+        <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight mb-4 text-gray-50">
+            Build Beautiful Websites & Apps
+            <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">That Grow Your Business</span>
+        </h1>
+    </AnimateOnScroll>
 
-          <div className="h-12 mb-6"> {/* Fixed height to prevent layout shift */}
-            <h2 className="text-xl md:text-3xl font-light text-purple-300 tagline-slide-fade">
-              {taglines[taglineIndex]}
-            </h2>
+    {/* Description - Slide Left */}
+    <AnimateOnScroll duration="duration-700" delay={600} direction="left">
+        {/* 💡 CHANGE APPLIED HERE: Added/Kept 'text-left' for explicit left alignment. 
+           (Note: text-justify is not generally recommended for accessibility/readability) */}
+        <p className="text-gray-400 text-sm md:text-lg mb-6 md:mb-8 px-0 text-left">
+            We design and build high-quality websites, mobile applications, and digital products —
+            from brand-forward UI/UX to robust backend systems and e‑commerce platforms.
+            Fast delivery, reliable maintenance, and real results.
+        </p>
+    </AnimateOnScroll>
+    
+
+    {/* Service Tags - Slide Up & Stagger */}
+    {/* 💡 CHANGE APPLIED HERE: Changed 'justify-center md:justify-start' to 'justify-start' for left alignment */}
+    <div className="flex flex-wrap justify-start gap-2 md:gap-3 mb-6 md:mb-8">
+        {[
+            'Web Development', 'App Development', 'UI/UX & Web Design',
+            'E‑commerce', 'Custom Software', 'Maintenance & Support'
+        ].map((label, i) => (
+            // Individual animation for each tag
+            <AnimateOnScroll key={i} duration="duration-500" delay={700 + i * 100} direction="up">
+                <span
+                    className="bg-gray-800 shadow-md px-3 py-2 rounded-full flex items-center justify-center gap-2 text-blue-400 font-medium text-sm md:text-base hover:scale-105 transition-transform duration-200 border border-gray-700"
+                >
+                    {label}
+                </span>
+            </AnimateOnScroll>
+        ))}
+    </div>
+
+            {/* Buttons - Slide Right (as a group) */}
+            {/* The 'justify-center sm:justify-start' on this div handles the button alignment responsively */}
+            <AnimateOnScroll duration="duration-700" delay={1300} direction="right">
+              <div className="flex flex-col sm:flex-row justify-center md:justify-start gap-3 md:gap-4 mb-8 md:mb-10 w-full sm:w-auto">
+                <Link to="/contact" className="w-full sm:w-auto"> {/* Using Link for internal navigation */}
+                  <button className="flex items-center justify-center w-full sm:w-auto gap-2 bg-white text-blue-600 font-semibold px-5 md:px-6 py-2.5 md:py-3 rounded-full shadow transition transform hover:scale-105 text-sm md:text-base">
+                    Get a Free Demo
+                  </button>
+                </Link>
+                <Link to="/contact" className="w-full sm:w-auto"> {/* Using Link for internal navigation */}
+                  <button className="flex items-center justify-center w-full sm:w-auto bg-gray-800 hover:bg-gray-700 text-blue-400 font-semibold px-5 md:px-6 py-2.5 md:py-3 rounded-full shadow border border-blue-400 transition transform hover:scale-105 text-sm md:text-base">
+                    Schedule a Call
+                  </button>
+                </Link>
+              </div>
+            </AnimateOnScroll>
+
+
+            {/* Goals Section - Slide Left (as a group) */}
+            <AnimateOnScroll duration="duration-700" delay={1500} direction="left">
+              <div className="flex flex-col md:flex-row items-center md:items-start gap-4 md:gap-8 w-full">
+                <span className="text-2xl md:text-4xl font-extrabold text-blue-400 tracking-wide font-poppins animate-pulse-fast">
+                  Our Goals:
+                </span>
+                <div className="flex flex-wrap justify-center md:justify-start gap-3 md:gap-4">
+                  {goals.map((goal, index) => (
+                    <span
+                      key={index}
+                      className="bg-gray-800 shadow-md px-4 py-3 rounded-full flex items-center justify-center gap-2 text-blue-400 font-semibold text-sm md:text-base hover:scale-105 transition-transform duration-200 border border-gray-700"
+                    >
+                      {goal.icon} {goal.text}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </AnimateOnScroll>
           </div>
 
-          <AnimateOnScroll duration="duration-700" direction="right" delay={600}> 
-            <p className="text-gray-400 text-base md:text-lg mb-8 max-w-lg">
-              At FlitCode, we turn visionary ideas into exceptional digital realities. Engineering powerful solutions that are built to perform.
-            </p>
-          </AnimateOnScroll>
-
-          {/* Skill Tags */}
-          <AnimateOnScroll duration="duration-700" direction="right" delay={700}> 
-            <div className="flex flex-wrap justify-center md:justify-start gap-3 mb-10">
-              {skillTags.map((tag, i) => (
-                <span key={i} className="bg-gray-800 px-3 py-1 rounded text-purple-400 font-medium text-sm border border-gray-700">
-                  {tag}
-                </span>
-              ))}
-            </div>
-          </AnimateOnScroll>
-
-          {/* Action Buttons */}
-          <AnimateOnScroll duration="duration-700" direction="right" delay={800}> 
-            <div className="flex flex-wrap justify-center md:justify-start gap-4 mb-10">
-              <Link to="/portfolio">
-                <button className="bg-purple-600 hover:bg-purple-700 text-white font-semibold px-8 py-3 rounded-lg shadow-lg transition transform hover:scale-105 flex items-center gap-2">
-                  View Projects <FaExternalLinkAlt size={12} />
-                </button>
-              </Link>
-              <Link to="/contact">
-                <button className="bg-transparent border border-gray-600 hover:border-purple-400 text-gray-300 hover:text-purple-400 font-semibold px-8 py-3 rounded-lg transition transform hover:scale-105">
-                  Let's Connect
-                </button>
-              </Link>
-            </div>
-          </AnimateOnScroll>
-        </div>
-
-        {/* RIGHT VISUAL: Isometric Device Frame */}
-        <AnimateOnScroll duration="duration-1000" direction="left" delay={400}> 
-          <div className="flex flex-1 justify-center items-center mt-10 md:mt-0 relative">
-            <div className="relative w-[300px] md:w-[450px] h-[300px] md:h-[450px] perspective-1000">
-              
-              {/* Floating Device Frame */}
-              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-56 md:w-72 h-72 md:h-96 bg-gray-800 rounded-2xl shadow-2xl border border-gray-700 transform rotate-y-45 rotate-x-10 animate-float">
-                <div className="absolute inset-2 bg-blue-900/20 rounded-xl overflow-hidden backdrop-blur-md p-6 flex flex-col justify-between border border-white/5">
-                  <div className="relative z-10 text-center">
-                    <h3 className="text-2xl font-bold text-gray-50 mb-2">FlitCode</h3>
-                    <p className="text-xs text-blue-200">High Performance Engineering</p>
-                    <div className="mt-8 space-y-2">
-                       <div className="h-1 w-full bg-blue-500/40 rounded-full animate-pulse"></div>
-                       <div className="h-1 w-2/3 bg-purple-500/40 rounded-full animate-pulse delay-75"></div>
+          {/* Animated Isometric Scene (Right Content) - Slide Down */}
+          {/* Hiding on mobile: hidden lg:flex */}
+          <div className=" lg:flex flex-1 justify-center items-center mt-10 md:mt-0 relative md:ml-2">
+            <AnimateOnScroll duration="duration-1000" delay={800} direction="down">
+              <div className="relative w-[300px] md:w-[500px] h-[300px] md:h-[500px] perspective-1000">
+                {/* Main Device Frame */}
+                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-48 md:w-64 h-64 md:h-80 bg-gray-800 rounded-xl shadow-2xl border border-gray-700 transform rotate-y-45 rotate-x-10 animate-float">
+                  {/* Screen Content - Company Info */}
+                  <div className="absolute inset-2 bg-blue-900/30 rounded-lg overflow-hidden backdrop-blur-sm p-4 flex flex-col justify-between">
+                    <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20"></div>
+                    <div className="relative z-10 text-center">
+                      <h3 className="text-xl md:text-2xl font-bold text-gray-50 mb-1 animate-pulse-light">FlitCode</h3> {/* Your Company Name */} <br />
+                      <p className="text-xs md:text-sm text-blue-200 mb-3"> we turn visionary ideas into exceptional digital realities. Our mission: to create powerful digital solutions that are a joy to build and use.</p> {/* Your Tagline */}
+                      <div className="bg-blue-600/50 h-1.5 w-3/4 mx-auto rounded-full mb-2 animate-pulse-slow"></div>
+                      <div className="bg-purple-600/50 h-1.5 w-1/2 mx-auto rounded-full animate-pulse-slow delay-300"></div>
+                    </div>
+                    <div className="relative z-10 text-center">
+                      <button className="bg-white text-blue-700 px-4 py-1.5 rounded-full text-sm font-semibold shadow-md hover:scale-105 transition-transform transform-gpu animate-fade-in-up">
+                        Client Portal
+                      </button>
                     </div>
                   </div>
-                  <div className="relative z-10 flex justify-center">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-blue-500 to-purple-600 animate-spin-slow"></div>
-                  </div>
+
+                  {/* Floating Elements (Icons/Dots) */}
+                  <div className="absolute -right-16 -top-8 animate-float-delayed rotate-z-5"><div className="bg-gray-800 p-3 rounded-lg shadow-xl border border-gray-700"><FaCodeBranch className="text-blue-400 text-xl" /></div></div>
+                  <div className="absolute -left-12 top-1/4 animate-float-slow rotate-z--5"><div className="bg-gray-800 p-3 rounded-lg shadow-xl border border-gray-700"><FaCloud className="text-purple-400 text-xl" /></div></div>
+                  <div className="absolute -right-24 top-1/3 w-24 h-px bg-gradient-to-r from-blue-500 to-transparent animate-expand"></div>
+                  <div className="absolute -left-20 top-1/2 w-20 h-px bg-gradient-to-l from-purple-500 to-transparent animate-expand-delayed"></div>
+                  <div className="absolute -right-32 top-1/3 animate-float-fast rotate-z-3"><div className="bg-gray-800 p-2 rounded-lg shadow-xl border border-gray-700"><div className="h-2 w-16 bg-blue-400/30 rounded-full"></div><div className="h-2 w-12 bg-blue-400/30 rounded-full mt-1"></div></div></div>
+                  <div className="absolute -left-28 bottom-1/4 animate-float-medium rotate-z--7"><div className="bg-gray-800 p-3 rounded-lg shadow-xl border border-gray-700"><FaServer className="text-purple-400 text-xl animate-spin-slow" /></div></div>
+                  <div className="absolute -right-12 bottom-1/4 animate-bounce-slow"><div className="bg-gray-800 p-3 rounded-full shadow-xl border border-gray-700"><FaDesktop className="text-blue-400 text-xl" /></div></div>
                 </div>
 
-                {/* Floating Tech Icons */}
-                <div className="absolute -right-12 -top-4 animate-float-delayed"><div className="bg-gray-800 p-3 rounded-xl border border-gray-700 shadow-xl"><FaCodeBranch className="text-blue-400" /></div></div>
-                <div className="absolute -left-10 top-1/3 animate-float-slow"><div className="bg-gray-800 p-3 rounded-xl border border-gray-700 shadow-xl"><FaCloud className="text-purple-400" /></div></div>
-                <div className="absolute -right-16 bottom-1/4 animate-bounce-slow"><div className="bg-gray-800 p-3 rounded-full border border-gray-700 shadow-xl"><FaDesktop className="text-blue-400" /></div></div>
-                <div className="absolute -left-16 bottom-10 animate-float-medium"><div className="bg-gray-800 p-3 rounded-xl border border-gray-700 shadow-xl"><FaServer className="text-green-400" /></div></div>
+                {/* Background Grid */}
+                <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
               </div>
-            </div>
+            </AnimateOnScroll>
           </div>
-        </AnimateOnScroll>
 
-        <style>
-          {`
-            .perspective-1000 { perspective: 1000px; }
-            .rotate-y-45 { transform: rotateY(45deg); }
-            .rotate-x-10 { transform: rotateX(10deg); }
-            
-            @keyframes float { 
-              0%, 100% { transform: translate(-50%, -50%) translateY(0px) rotateY(45deg) rotateX(10deg); } 
-              50% { transform: translate(-50%, -50%) translateY(-20px) rotateY(45deg) rotateX(10deg); } 
-            }
-            .animate-float { animation: float 6s ease-in-out infinite; }
+          {/* Custom Styles */}
+          <style>
+            {`
+              .perspective-1000 { perspective: 1000px; }
+              .rotate-y-45 { transform: rotateY(45deg); }
+              .rotate-x-10 { transform: rotateX(10deg); }
 
-            @keyframes slide-fade {
-              0% { opacity: 0; transform: translateY(10px); }
-              15% { opacity: 1; transform: translateY(0); }
-              85% { opacity: 1; transform: translateY(0); }
-              100% { opacity: 0; transform: translateY(-10px); }
-            }
-            .tagline-slide-fade { animation: slide-fade 3s ease-in-out infinite; }
+              /* Main Device Float Animation */
+              @keyframes float { 0%, 100% { transform: translate(-50%, -50%) translateY(0px) rotateY(45deg) rotateX(10deg); } 50% { transform: translate(-50%, -50%) translateY(-10px) rotateY(45deg) rotateX(10deg); } }
+              .animate-float { animation: float 6s ease-in-out infinite; }
 
-            .animate-float-slow { animation: float 8s ease-in-out infinite; }
-            .animate-float-medium { animation: float 5s ease-in-out infinite; }
-            .animate-float-delayed { animation: float 6s ease-in-out infinite 1s; }
-            .animate-bounce-slow { animation: bounce 4s ease-in-out infinite; }
-            @keyframes spin-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-            .animate-spin-slow { animation: spin-slow 12s linear infinite; }
-          `}
-        </style>
-      </section>
+              /* Floating Elements Animation */
+              @keyframes floatSlow { 0%, 100% { transform: translateY(0px) rotate(0deg); } 50% { transform: translateY(-15px) rotate(5deg); } }
+              @keyframes floatFast { 0%, 100% { transform: translateY(0px) rotate(0deg); } 50% { transform: translateY(-8px) rotate(-5deg); } }
+              @keyframes floatMedium { 0%, 100% { transform: translateY(0px) rotate(0deg); } 50% { transform: translateY(-12px) rotate(3deg); } }
+              @keyframes bounce-slow { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
-      {/* COMPONENT SECTIONS */}
+              .animate-float-slow { animation: floatSlow 7s ease-in-out infinite; }
+              .animate-float-fast { animation: floatFast 4s ease-in-out infinite; }
+              .animate-float-medium { animation: floatMedium 5s ease-in-out infinite; }
+              .animate-float-delayed { animation: floatSlow 6s ease-in-out infinite 1s; } /* slightly delayed start */
+              .animate-bounce-slow { animation: bounce-slow 3s ease-in-out infinite; }
+
+              /* Line Expand Animation */
+              @keyframes expand { 0% { transform: scaleX(0); opacity: 0; } 50% { opacity: 1; } 100% { transform: scaleX(1); opacity: 0.7; } }
+              .animate-expand { animation: expand 2.5s ease-out infinite alternate; }
+              .animate-expand-delayed { animation: expand 2.5s ease-out infinite alternate 1s; }
+
+              /* Spin Animation */
+              @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+              .animate-spin-slow { animation: spin 10s linear infinite; } /* slower spin */
+
+              /* Pulse for text on screen */
+              @keyframes pulse-light { 0%, 100% { opacity: 1; } 50% { opacity: 0.8; } }
+              .animate-pulse-light { animation: pulse-light 3s ease-in-out infinite; }
+              .animate-pulse-slow { animation: pulse-light 2s ease-in-out infinite; }
+
+              /* Fade In Up for Button */
+              @keyframes fade-in-up { 0% { opacity: 0; transform: translateY(10px); } 100% { opacity: 1; transform: translateY(0); } }
+              .animate-fade-in-up { animation: fade-in-up 0.8s ease-out forwards; }
+
+
+              /* Grid Background */
+              .bg-grid-pattern {
+                background-image: linear-gradient(to right, rgba(99, 102, 241, 0.08) 1px, transparent 1px),
+                                  linear-gradient(to bottom, rgba(99, 102, 241, 0.08) 1px, transparent 1px);
+                background-size: 20px 20px;
+              }
+
+              /* Custom rotations for floating elements */
+              .rotate-z-5 { transform: rotateZ(5deg); }
+              .rotate-z--5 { transform: rotateZ(-5deg); }
+              .rotate-z-3 { transform: rotateZ(3deg); }
+              .rotate-z--7 { transform: rotateZ(-7deg); }
+
+            `}
+          </style>
+        </section>
+      </AnimateOnScroll> {/* WRAPPED SECTION */}
+
+      {/* Page sections rendered on Home (single-page style) - these will use their own AnimateOnScroll wrappers */}
+      <Industries />
       <AboutUs />
-      <TechStack />
-      <Portfolio />
+      <Services />
       <ContactUs />
     </>
   );

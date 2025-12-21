@@ -1,68 +1,139 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { FaCode } from 'react-icons/fa';
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import logo from "../assets/logo.png";
+import { FaTimes } from "react-icons/fa";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const linkClasses = 'text-gray-300 hover:text-purple-400 font-medium transition transform duration-200';
+  // Disable both vertical & horizontal scroll when menu is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+      document.documentElement.style.overflow = "auto";
+    }
+  }, [isOpen]);
+
+  const menuItems = [
+    "Home",
+    "Services",
+    "Industries",
+    "Portfolio",
+    "Team",
+    "Testimonials",
+    "About",
+    "Careers",
+    "Contact",
+  ];
+
+  const linkClasses =
+    "hover:text-purple-400 font-semibold transition duration-200";
 
   return (
     <nav className="bg-gray-900 text-white px-6 py-4 flex justify-between items-center border-b border-gray-800 sticky top-0 z-50">
-      
-      {/* Logo/Brand Name */}
-      <div className='flex items-center'>
-        <Link to="/home" aria-label="Go to home" className="flex items-center gap-2">
-          <FaCode className="text-blue-400 text-3xl" aria-hidden="true" />
-          <span className="text-xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">
-            RD
-          </span>
-        </Link>
-      </div>
+      {/* Logo */}
+      <Link to="/" className="flex items-center space-x-2">
+        <img src={logo} alt="Flitcode" className="h-12 w-auto" />
+      </Link>
 
       {/* Desktop Menu */}
-      <ul className="hidden md:flex space-x-8">
-        <li><Link to="/home" className={`${linkClasses} hover:scale-105`}>Home</Link></li>
-        <li><Link to="/about" className={linkClasses}>About Me</Link></li>
-        <li><Link to="/techstack" className={linkClasses}>TechStack</Link></li>
-        <li><Link to="/portfolio" className={linkClasses}>Portfolio</Link></li>
-        <li><Link to="/contact" className={linkClasses}>Contact Me</Link></li>
+      <ul className="hidden md:flex space-x-8 items-center">
+        {menuItems.map((item) => (
+          <li key={item}>
+            <Link
+              to={`/${item === "Home" ? "" : item.toLowerCase()}`}
+              className={linkClasses}
+            >
+              {item}
+            </Link>
+          </li>
+        ))}
       </ul>
 
       {/* Desktop Button */}
       <div className="hidden md:block">
         <Link to="/contact">
-          <button className='bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded transition transform hover:scale-105'>
-            Let's Connect
+          <button className="bg-gradient-to-r from-purple-500 to-indigo-500 text-white py-2 px-5 rounded-full font-semibold shadow-md hover:shadow-purple-500/50 hover:scale-105 transition">
+            Get Demo
           </button>
         </Link>
       </div>
 
-      {/* Mobile Hamburger Button */}
-      <button 
-        className='md:hidden text-white text-3xl focus:outline-none relative z-50' 
-        onClick={() => setIsOpen(!isOpen)}
-        aria-expanded={isOpen}
+      {/* Hamburger Icon */}
+      <button
+        onClick={() => setIsOpen(true)}
+        className="md:hidden text-3xl focus:outline-none z-50 relative"
       >
-        {isOpen ? '✖' : '☰'}
+        ☰
       </button>
 
-      {/* Mobile Menu Overlay */}
-      {isOpen && (
-        <div className='md:hidden fixed inset-0 bg-gray-900 bg-opacity-95 flex flex-col items-center justify-center space-y-6 text-center z-40 transition-all duration-300'>
-          <Link to="/home" className={linkClasses + ' text-xl'} onClick={() => setIsOpen(false)}>Home</Link>
-          <Link to="/about" className={linkClasses + ' text-xl'} onClick={() => setIsOpen(false)}>About Me</Link>
-          <Link to="/techstack" className={linkClasses + ' text-xl'} onClick={() => setIsOpen(false)}>TechStack</Link>
-          <Link to="/portfolio" className={linkClasses + ' text-xl'} onClick={() => setIsOpen(false)}>Portfolio</Link>
-          <Link to="/contact" className={linkClasses + ' text-xl'} onClick={() => setIsOpen(false)}>Contact Me</Link>
+      {/* Overlay + Menu */}
+      <AnimatePresence>
+        {isOpen && (
+          <>
+            {/* Overlay */}
+            <motion.div
+              className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-40"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsOpen(false)}
+            />
 
-          <Link to="/contact" onClick={() => setIsOpen(false)}>
-            <button className='bg-blue-600 hover:bg-blue-700 text-white py-2 px-6 rounded text-lg transition transform hover:scale-105'>
-              Let's Connect
-            </button>
-          </Link>
-        </div>
-      )}
+            {/* Mobile Menu */}
+            <motion.div
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "spring", stiffness: 80, damping: 15 }}
+              className="fixed top-0 right-0 w-[80%] sm:w-[65%] h-screen bg-gray-900 z-50 flex flex-col items-center justify-center space-y-8 p-6 overflow-hidden"
+            >
+              {/* Close Button */}
+              <button
+                className="absolute top-6 right-6 text-white text-3xl hover:rotate-90 transition-transform"
+                onClick={() => setIsOpen(false)}
+              >
+                <FaTimes />
+              </button>
+
+              {/* Animated Links */}
+              {menuItems.map((item, index) => (
+                <motion.div
+                  key={item}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.08, duration: 0.3 }}
+                >
+                  <Link
+                    to={`/${item === "Home" ? "" : item.toLowerCase()}`}
+                    onClick={() => setIsOpen(false)}
+                    className={`text-lg font-medium tracking-wide ${linkClasses}`}
+                  >
+                    {item}
+                  </Link>
+                </motion.div>
+              ))}
+
+              {/* Get Demo Button */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.8 }}
+              >
+                <Link to="/contact" onClick={() => setIsOpen(false)}>
+                  <button className="mt-4 bg-gradient-to-r from-purple-500 to-indigo-500 text-white py-2 px-6 rounded-full text-lg font-semibold shadow-lg hover:scale-110 transition">
+                    Get Demo
+                  </button>
+                </Link>
+              </motion.div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </nav>
   );
 };
