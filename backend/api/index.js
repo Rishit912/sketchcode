@@ -8,7 +8,6 @@ const projectRoutes = require("../routes/projectRoute");
 const teamRoutes = require("../routes/teamRoute");
 const User = require("../modles/user"); // Matches your 'modles' folder name
 const jwt = require("jsonwebtoken");
-const serverless = require("serverless-http");
 
 const app = express();
 
@@ -71,10 +70,17 @@ const ensureDB = async () => {
     await connectDB();
 };
 
-const handler = serverless(app);
 
 // Export for Vercel
 module.exports = async (req, res) => {
     await ensureDB();
     return handler(req, res);
 };
+
+// Start script for nodemon
+if (require.main === module) {
+    const PORT = process.env.PORT || 5000;
+    app.listen(PORT, () => {
+        console.log(`Server is running on port ${PORT}`);
+    });
+}
