@@ -6,13 +6,28 @@ const connectDB = require("../config/db");
 const authRoute = require("../routes/authRoute");
 const projectRoutes = require("../routes/projectRoute");
 const teamRoutes = require("../routes/teamRoute");
-const User = require("../modles/user"); // Matches your 'modles' folder name
+const User = require("../modles/user"); 
 const jwt = require("jsonwebtoken");
 
 const app = express();
 
+// Database Connection Middleware for Serverless
+// This ensures DB connects before handling any request
+const ensureDB = async (req, res, next) => {
+    if (mongoose.connection && mongoose.connection.readyState === 1) {
+        return next();
+    }
+    try {
+        await connectDB();
+        next();
+    } catch (err) {
+        res.status(500).json({ error: true, message: "Database connection failed" });
+    }
+};
+
 // Middleware
 app.use(express.json());
+app.use(ensureDB); // Runs on every request
 
 // CORS Configuration
 const allowedOrigins = [
@@ -64,23 +79,14 @@ app.post("/api/auth/register", async (req, res) => {
     }
 });
 
-// Database Connection Logic for Serverless
-const ensureDB = async () => {
-    if (mongoose.connection && mongoose.connection.readyState === 1) return;
-    await connectDB();
-};
-
-
-// Export for Vercel
-module.exports = async (req, res) => {
-    await ensureDB();
-    return handler(req, res);
-};
-
-// Start script for nodemon
-if (require.main === module) {
+// FOR LOCAL DEVELOPMENT
+if (process.env.NODE_ENV !== 'production') {
     const PORT = process.env.PORT || 5000;
     app.listen(PORT, () => {
         console.log(`Server is running on port ${PORT}`);
     });
 }
+
+// FOR VERCEL DEPLOYMENT
+// Vercel takes the Express instance and turns it into a serverless function
+module.exports = app;
