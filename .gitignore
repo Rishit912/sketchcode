@@ -15,3 +15,5 @@ yarn-error.log*
 
 # Mac/Linux System Files
 .DS_Store
+.vercel
+.env*.local

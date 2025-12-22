@@ -2,11 +2,11 @@ const express = require("express");
 const mongoose = require("mongoose");
 require("dotenv").config();
 const cors = require("cors");
-const connectDB = require("../config/db");
-const authRoute = require("../routes/authRoute");
-const projectRoutes = require("../routes/projectRoute");
-const teamRoutes = require("../routes/teamRoute");
-const User = require("../modles/user");
+const connectDB = require("../backend/config/db");
+const authRoute = require("../backend/routes/authRoute");
+const projectRoutes = require("../backend/routes/projectRoute");
+const teamRoutes = require("../backend/routes/teamRoute");
+const User = require("../backend/modles/user");
 const jwt = require("jsonwebtoken");
 const serverless = require("serverless-http");
 
