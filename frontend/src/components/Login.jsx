@@ -1,14 +1,13 @@
+
 import React, { useState } from "react";
 import api from '../api';
 import { useNavigate } from "react-router-dom";
 
-// Using shared `api` instance from ../api.js — no inline base URL required
-
 const Login = () => {
     const [formData, setFormData] = useState({ email: "", password: "" });
     const [error, setError] = useState("");
-    const [registerStatus, setRegisterStatus] = useState(null); // 'success', 'error', 'idle'
-    const navigate = useNavigate()
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -18,50 +17,25 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError("");
+        setLoading(true);
         try {
-            console.log("Attempting login with:", formData.email);
             const res = await api.post(`/api/auth/login`, { ...formData });
             localStorage.setItem("token", res.data.token);
-            console.log("Login successful! Token stored.");
             navigate("/admin-dashboard");
         } catch (error) {
-            console.error("Login error:", error.response?.data || error.message);
             setError(error.response?.data?.message || "Login failed. Please check your credentials.");
+        } finally {
+            setLoading(false);
         }
     };
-    
-    // --- TEMPORARY REGISTRATION FUNCTION (REQUIRED FOR FIRST LOGIN) ---
-    const handleRegister = async () => {
-        setRegisterStatus(null);
-        setError("");
-        
-        if (!formData.email || !formData.password) {
-            setError("Please fill in both email and password to register.");
-            return;
-        }
-
-        try {
-            // This calls the /api/auth/register route we are creating in the backend
-            await api.post(`/api/auth/register`, { ...formData });
-            setRegisterStatus('success');
-            console.log("✅ Registration successful. You can now log in.");
-        } catch (registerError) {
-            console.error("Registration error:", registerError.response?.data || registerError.message);
-            setRegisterStatus('error');
-            setError(registerError.response?.data?.message || "Registration failed. User might already exist.");
-        }
-    };
-    // ----------------------------------------
 
     return (
-        <div className="flex py-20 items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-black px-4">
-            <div className="w-full max-w-md rounded-2xl bg-gray-900/70 p-8 shadow-2xl backdrop-blur-sm border border-gray-700">
-                <h2 className="text-3xl font-bold text-center text-white mb-8">
-                    Welcome Back 👋
+        <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-black px-4">
+            <div className="w-full max-w-md rounded-2xl bg-gray-900/80 p-8 shadow-2xl backdrop-blur-sm border border-gray-700">
+                <h2 className="text-3xl font-bold text-center text-white mb-8 tracking-tight">
+                    Admin Login
                 </h2>
-
                 <form onSubmit={handleSubmit} className="space-y-6">
-                    {/* Email Field */}
                     <div>
                         <label
                             htmlFor="email"
@@ -74,14 +48,13 @@ const Login = () => {
                             name="email"
                             id="email"
                             required
+                            autoComplete="username"
                             value={formData.email}
                             onChange={handleChange}
                             className="w-full rounded-xl bg-gray-800 border border-gray-700 text-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
-                            placeholder="you@example.com"
+                            placeholder="admin@example.com"
                         />
                     </div>
-
-                    {/* Password Field */}
                     <div>
                         <label
                             htmlFor="password"
@@ -94,42 +67,39 @@ const Login = () => {
                             name="password"
                             id="password"
                             required
+                            autoComplete="current-password"
                             value={formData.password}
                             onChange={handleChange}
                             className="w-full rounded-xl bg-gray-800 border border-gray-700 text-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                             placeholder="••••••••"
                         />
                     </div>
-
-                    {/* Feedback Messages */}
                     {error && (
                         <div className="p-3 text-sm bg-red-500/10 border border-red-500/20 rounded-lg text-red-400">
                             {error}
                         </div>
                     )}
-                    
-                    {registerStatus === 'success' && (
-                        <div className="p-3 text-sm bg-green-500/10 border border-green-500/20 rounded-lg text-green-400">
-                            Registration successful! Please click Login now.
-                        </div>
-                    )}
-                    
                     <button
                         type="submit"
-                        className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold transition duration-300 shadow-lg hover:shadow-blue-500/30"
+                        disabled={loading}
+                        className={`w-full py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold transition duration-300 shadow-lg hover:shadow-blue-500/30 flex items-center justify-center ${loading ? 'opacity-60 cursor-not-allowed' : ''}`}
                     >
-                        Login
-                    </button>
-                    
-                    {/* TEMPORARY BUTTON TO REGISTER FIRST USER */}
-                    <button
-                        type="button"
-                        onClick={handleRegister}
-                        className="w-full py-3 bg-gray-600 hover:bg-gray-700 text-white rounded-xl font-semibold transition duration-300 shadow-lg mt-2"
-                    >
-                        Register First Admin User (Use Once!)
+                        {loading ? (
+                            <span className="flex items-center gap-2">
+                                <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+                                </svg>
+                                Logging in...
+                            </span>
+                        ) : (
+                            'Login'
+                        )}
                     </button>
                 </form>
+                <div className="mt-8 text-xs text-gray-500 text-center">
+                    Only authorized admin can access. Contact the site owner if you need access.
+                </div>
             </div>
         </div>
     );

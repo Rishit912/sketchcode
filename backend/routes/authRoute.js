@@ -72,11 +72,16 @@ router.post("/login", async (req, res) => {
             return res.status(400).json({ message: "Email and password are required" });
         }
 
-        // Must explicitly select password because it is set to select: false in the model
-        const user = await User.findOne({ email }).select('+password'); 
+        // Must explicitly select password and role because password is select: false and we need role for admin check
+        const user = await User.findOne({ email }).select('+password role'); 
         
         if (!user) {
             return res.status(400).json({ message: "Invalid email or password" });
+        }
+
+        // Only allow login for admin users
+        if (user.role !== 'admin') {
+            return res.status(403).json({ message: "Access denied: Only admin can log in." });
         }
 
         // Use the matchPassword method from the user.js model
@@ -85,16 +90,11 @@ router.post("/login", async (req, res) => {
             return res.status(400).json({ message: "Invalid email or password" });
         }
 
-        // FIX: Must explicitly select role here since it's used to generate the token
-        const userWithRole = await User.findOne({ email });
-        if (!userWithRole) return res.status(500).json({ message: "User data fetch error" });
-        
-        // FIX: Pass userWithRole.role to generateToken
-        const token = generateToken(userWithRole._id, userWithRole.role);
-        
+        // Generate token with role
+        const token = generateToken(user._id, user.role);
         res.json({ 
             token,
-            user: { email: userWithRole.email }
+            user: { email: user.email }
         });
     } catch (error) {
         console.error("Login error:", error);
