@@ -20,39 +20,6 @@ const generateToken = (id, role) => {
 // NEW ROUTE: Admin Registration (Used once to create the first user)
 // @route POST /api/auth/register
 // --------------------------------------------------------
-router.post("/register", async (req, res) => {
-    try {
-        const { email, password } = req.body;
-        
-        if (!email || !password) {
-            return res.status(400).json({ message: "Email and password are required" });
-        }
-        
-        // 1. Check if user already exists
-        const userExists = await User.findOne({ email });
-        if (userExists) {
-            return res.status(400).json({ message: "User already exists" });
-        }
-        
-        // 2. Create the user (Password will be hashed automatically by user.js pre-save hook)
-        // User model defaults to role: 'admin'
-        const user = await User.create({ email, password });
-
-        if (user) {
-            return res.status(201).json({
-                // FIX: Pass user.role to generateToken
-                token: generateToken(user._id, user.role),
-                user: { email: user.email },
-                message: "Registration successful. You can now login."
-            });
-        } else {
-            return res.status(400).json({ message: "Invalid user data received" });
-        }
-    } catch (error) {
-        console.error("Registration error:", error);
-        res.status(500).json({ message: "Internal server error" });
-    }
-});
 
 // --------------------------------------------------------
 // EXISTING ROUTE: Admin login
