@@ -61,24 +61,13 @@ app.get("/ping", (req, res) => {
     res.status(200).json({ error: false, message: "Pong" });
 });
 
-// Registration Logic
+// Registration Logic - DISABLED
+// Only the setup script can create the admin user
 app.post("/api/auth/register", async (req, res) => {
-    try {
-        const { email, password } = req.body;
-        const exists = await User.findOne({ email });
-        if (exists) return res.status(400).json({ message: "User already exists" });
-
-        const newUser = await User.create({ email, password });
-        const token = jwt.sign(
-            { id: newUser._id, email: newUser.email },
-            process.env.JWT_KEY || "your_fallback_secret",
-            { expiresIn: "1d" }
-        );
-
-        res.status(201).json({ error: false, message: "Registration successful", token });
-    } catch (error) {
-        res.status(500).json({ message: "Error: " + error.message });
-    }
+    res.status(403).json({ 
+        error: true, 
+        message: "Registration is disabled. Only authorized admin setup is allowed." 
+    });
 });
 
 // FOR LOCAL DEVELOPMENT
