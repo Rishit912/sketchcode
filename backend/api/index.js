@@ -35,7 +35,8 @@ const allowedOrigins = [
     "http://localhost:5173",
     "https://flitcode.app",
     "https://flitcode.vercel.app",
-    "https://flitcode-api.vercel.app"
+    "https://flitcode-api.vercel.app",
+    "https://flitcode-o-backend.vercel.app"
 ];
 
 app.use(cors({
