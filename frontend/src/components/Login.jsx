@@ -105,9 +105,6 @@ const Login = () => {
                 setOtpSent(true);
                 setResendTimer(RESEND_COOLDOWN);
                 setError("");
-                if (res.data.otpDev) {
-                    console.log("DEV OTP (login):", res.data.otpDev);
-                }
             }
         } catch (err) {
             console.error("Login error:", err);
@@ -182,9 +179,6 @@ const Login = () => {
             });
             setResendTimer(RESEND_COOLDOWN);
             setError("");
-            if (res.data.otpDev) {
-                console.log("DEV OTP (resend):", res.data.otpDev);
-            }
         } catch (err) {
             console.error("Resend OTP error:", err);
             setError(err.response?.data?.message || "Failed to resend OTP. Please try again.");

@@ -4,6 +4,7 @@ const nodemailer = require('nodemailer');
 // If SMTP env vars exist, use them in any NODE_ENV. Otherwise, fall back to console logging.
 const createTransporter = () => {
     const hasSMTP = !!(process.env.EMAIL_HOST && process.env.EMAIL_USER && process.env.EMAIL_PASS);
+    const requireSMTP = process.env.EMAIL_REQUIRE_SMTP === 'true';
 
     if (hasSMTP) {
         return nodemailer.createTransport({
@@ -17,7 +18,11 @@ const createTransporter = () => {
         });
     }
 
-    // No SMTP configured: log OTP to console
+    // No SMTP configured
+    if (requireSMTP) {
+        console.warn('❗ EMAIL_REQUIRE_SMTP=true but SMTP is not configured. Emails will NOT be sent.');
+        return null;
+    }
     console.log('⚠️ No SMTP configured. Falling back to console-only OTP logging.');
     return null;
 };
@@ -64,7 +69,11 @@ const sendOTPEmail = async (email, otp) => {
             console.log('✅ OTP email sent:', info.messageId);
             return { success: true, messageId: info.messageId };
         } else {
-            // Development mode: log to console
+            // If SMTP is required, treat as error
+            if (process.env.EMAIL_REQUIRE_SMTP === 'true') {
+                throw new Error('SMTP not configured. Set EMAIL_HOST/EMAIL_USER/EMAIL_PASS or remove EMAIL_REQUIRE_SMTP.');
+            }
+            // Development fallback: log to console
             console.log('\n📧 ========== OTP EMAIL (DEVELOPMENT MODE) ==========');
             console.log(`To: ${email}`);
             console.log(`Subject: ${mailOptions.subject}`);

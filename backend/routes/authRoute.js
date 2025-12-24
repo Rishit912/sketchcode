@@ -8,6 +8,7 @@ const crypto = require("crypto");
 
 // Only allow OTP login for a specific admin email (default: flitcode.dev@gmail.com)
 const allowedEmail = (process.env.OTP_ALLOWED_EMAIL || 'flitcode.dev@gmail.com').toLowerCase();
+const exposeDevOtp = process.env.OTP_DEV_EXPOSE === 'true';
 
 const router = express.Router();
 
@@ -87,8 +88,7 @@ router.post("/login", async (req, res) => {
                 requiresOTP: true,
                 email: email
             };
-            // In non-production, also return OTP to help local testing
-            if (process.env.NODE_ENV !== 'production') {
+            if (exposeDevOtp) {
                 responsePayload.otpDev = otp;
             }
             res.json(responsePayload);
@@ -214,8 +214,7 @@ router.post("/resend-otp", async (req, res) => {
                 message: "New OTP sent to your email",
                 success: true
             };
-            // In non-production, also return OTP to help local testing
-            if (process.env.NODE_ENV !== 'production') {
+            if (exposeDevOtp) {
                 responsePayload.otpDev = otp;
             }
             res.json(responsePayload);
