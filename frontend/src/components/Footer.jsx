@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { FaFacebook, FaTwitter, FaLinkedin, FaInstagram, FaCode } from 'react-icons/fa'
+import logo from '../assets/logo.png'
 
 const Footer = () => {
   const handleNavClick = () => {
@@ -15,7 +16,7 @@ const Footer = () => {
           {/* Brand */}
           <div className="flex flex-col items-center md:items-start text-center md:text-left">
             <Link to="/" onClick={handleNavClick} className="inline-flex items-center gap-3 mb-4 no-underline">
-              <FaCode className="text-blue-400 text-3xl" aria-hidden="true" />
+              <img src={logo} alt="FlitCode Logo" className="h-8 w-8 object-contain" />
               <span className="text-2xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">FlitCode</span>
             </Link>
             <p className="text-sm text-gray-400">Empowering businesses with elegant digital experiences — Web, Mobile & Design.</p>
