@@ -1,17 +1,20 @@
 const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const User = require("../modles/user"); // Assumes User model is updated with hashing logic
+const User = require("../modles/user");
 const { isConnected } = require("../config/db");
 
 const router = express.Router();
 
-// Utility to generate token - FIX: Include user role in the token payload
+// Utility to generate token
 const generateToken = (id, role) => {
-    // Uses JWT_KEY from process.env (or a secure fallback secret)
+    const secret = process.env.JWT_KEY;
+    if (!secret) {
+        throw new Error('JWT_KEY environment variable is not set');
+    }
     return jwt.sign(
-        { id: id, role: role }, // ADDED ROLE HERE
-        process.env.JWT_KEY || 'your_fallback_secret', 
+        { id: id, role: role },
+        secret, 
         { expiresIn: "1d" }
     );
 };
@@ -20,39 +23,6 @@ const generateToken = (id, role) => {
 // NEW ROUTE: Admin Registration (Used once to create the first user)
 // @route POST /api/auth/register
 // --------------------------------------------------------
-router.post("/register", async (req, res) => {
-    try {
-        const { email, password } = req.body;
-        
-        if (!email || !password) {
-            return res.status(400).json({ message: "Email and password are required" });
-        }
-        
-        // 1. Check if user already exists
-        const userExists = await User.findOne({ email });
-        if (userExists) {
-            return res.status(400).json({ message: "User already exists" });
-        }
-        
-        // 2. Create the user (Password will be hashed automatically by user.js pre-save hook)
-        // User model defaults to role: 'admin'
-        const user = await User.create({ email, password });
-
-        if (user) {
-            return res.status(201).json({
-                // FIX: Pass user.role to generateToken
-                token: generateToken(user._id, user.role),
-                user: { email: user.email },
-                message: "Registration successful. You can now login."
-            });
-        } else {
-            return res.status(400).json({ message: "Invalid user data received" });
-        }
-    } catch (error) {
-        console.error("Registration error:", error);
-        res.status(500).json({ message: "Internal server error" });
-    }
-});
 
 // --------------------------------------------------------
 // EXISTING ROUTE: Admin login
@@ -72,11 +42,16 @@ router.post("/login", async (req, res) => {
             return res.status(400).json({ message: "Email and password are required" });
         }
 
-        // Must explicitly select password because it is set to select: false in the model
-        const user = await User.findOne({ email }).select('+password'); 
+        // Must explicitly select password and role because password is select: false and we need role for admin check
+        const user = await User.findOne({ email }).select('+password role'); 
         
         if (!user) {
             return res.status(400).json({ message: "Invalid email or password" });
+        }
+
+        // Only allow login for admin users
+        if (user.role !== 'admin') {
+            return res.status(403).json({ message: "Access denied: Only admin can log in." });
         }
 
         // Use the matchPassword method from the user.js model
@@ -85,16 +60,11 @@ router.post("/login", async (req, res) => {
             return res.status(400).json({ message: "Invalid email or password" });
         }
 
-        // FIX: Must explicitly select role here since it's used to generate the token
-        const userWithRole = await User.findOne({ email });
-        if (!userWithRole) return res.status(500).json({ message: "User data fetch error" });
-        
-        // FIX: Pass userWithRole.role to generateToken
-        const token = generateToken(userWithRole._id, userWithRole.role);
-        
+        // Generate token with role
+        const token = generateToken(user._id, user.role);
         res.json({ 
             token,
-            user: { email: userWithRole.email }
+            user: { email: user.email }
         });
     } catch (error) {
         console.error("Login error:", error);

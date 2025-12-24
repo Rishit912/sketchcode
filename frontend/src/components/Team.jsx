@@ -7,6 +7,14 @@ import AnimateOnScroll from './AnimateOnScroll'; // ADDED
 const Team = () => {
   const [team, setTeam] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [expandedBios, setExpandedBios] = useState({});
+
+  const toggleBio = (memberId) => {
+    setExpandedBios(prev => ({
+      ...prev,
+      [memberId]: !prev[memberId]
+    }));
+  };
 
   const fetchTeam = async () => {
     try {
@@ -71,7 +79,7 @@ const Team = () => {
                   duration="duration-700"
                   direction={index % 2 === 0 ? "left" : "right"} // Alternating direction
                 >
-                  <article className="bg-gray-800 rounded-2xl overflow-hidden shadow-xl transform transition-transform duration-300 hover:scale-[1.02] border border-gray-700 max-w-xs mx-auto w-full h-full flex flex-col">
+                  <article className="bg-gray-800 rounded-2xl overflow-hidden shadow-xl transform transition-transform duration-300 hover:scale-[1.02] border border-gray-700 max-w-xs mx-auto w-full flex flex-col">
                     <div className="flex items-center justify-center p-4 border-b border-gray-600">
                       <div className="w-32 h-40 flex items-center justify-center">
                         {member.imageUrl ? (
@@ -91,10 +99,24 @@ const Team = () => {
                         )}
                       </div>
                     </div>
-                    <div className="p-6 flex-grow">
+                    <div className="p-6 flex-grow flex flex-col">
                       <h3 className="text-xl font-semibold text-gray-100 mb-1">{member.name}</h3>
                       <p className="text-blue-400 mb-3">{member.position}</p>
-                      <p className="text-gray-400 mb-4 line-clamp-3">{member.bio}</p>
+                      <div className="mb-4">
+                        {expandedBios[member._id] ? (
+                          <p className="text-gray-400">{member.bio}</p>
+                        ) : (
+                          <p className="text-gray-400 line-clamp-3">{member.bio}</p>
+                        )}
+                        {member.bio && member.bio.length > 100 && (
+                          <button 
+                            onClick={() => toggleBio(member._id)}
+                            className="text-blue-400 hover:text-blue-300 text-sm mt-2 font-semibold transition"
+                          >
+                            {expandedBios[member._id] ? 'See less' : 'See more...'}
+                          </button>
+                        )}
+                      </div>
 
                       <div className="flex flex-wrap gap-2 mb-4">
                         {(member.skills || []).map((s, i) => (

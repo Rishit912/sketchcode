@@ -1,10 +1,14 @@
 const jwt = require("jsonwebtoken");
-require("dotenv").config();
-const User = require("../modles/user"); // Path to your User model
+const User = require("../modles/user");
 
-// Use the same fallback secret used elsewhere to avoid verification mismatch when JWT_KEY isn't set.
-// IMPORTANT: For production, set process.env.JWT_KEY to a secure value and remove or rotate the fallback.
-const jwtKey = process.env.JWT_KEY || 'your_fallback_secret';
+// Get JWT secret from environment
+const getJwtSecret = () => {
+    const secret = process.env.JWT_KEY;
+    if (!secret) {
+        throw new Error('JWT_KEY environment variable is not set');
+    }
+    return secret;
+};
 
 // 1. Basic Token Verification
 const verifyToken = (req, res, next) => {
@@ -15,15 +19,11 @@ const verifyToken = (req, res, next) => {
 
   try {
     const token = authHeader.split(" ")[1];
-    const decoded = jwt.verify(token, jwtKey);
-    // IMPORTANT: Attach the decoded payload to the request
+    const decoded = jwt.verify(token, getJwtSecret());
     req.user = decoded; 
-    // Helpful debug when running in environments where tokens fail validation
-    // (will appear in server logs)
-    // console.log('verifyToken: decoded token payload:', decoded);
     next();
   } catch (error) {
-    console.error("JWT Verification Error:", error);
+    console.error("JWT Verification Error:", error.message);
     res.status(403).json({ error: true, message: "Invalid or expired auth token" });
   }
 };

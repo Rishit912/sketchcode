@@ -1,11 +1,14 @@
 const User = require('../modles/user'); 
 const jwt = require('jsonwebtoken');
 
-// Utility function to generate JWT token - FIX: Include user role
+// Utility function to generate JWT token
 const generateToken = (id, role) => {
-    // Uses JWT_KEY from process.env
-    return jwt.sign({ id, role }, process.env.JWT_KEY || 'your_fallback_secret', { // ADDED ROLE HERE
-        expiresIn: '1d', // 1 day expiration
+    const secret = process.env.JWT_KEY;
+    if (!secret) {
+        throw new Error('JWT_KEY environment variable is not set');
+    }
+    return jwt.sign({ id, role }, secret, {
+        expiresIn: '1d',
     });
 };
 
