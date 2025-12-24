@@ -3,12 +3,11 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../modles/user");
 const { isConnected } = require("../config/db");
-const { sendOTPEmail } = require("../config/email");
-const crypto = require("crypto");
 
-// Only allow OTP login for a specific admin email (default: flitcode.dev@gmail.com)
-const allowedEmail = (process.env.OTP_ALLOWED_EMAIL || 'flitcode.dev@gmail.com').toLowerCase();
-const exposeDevOtp = process.env.OTP_DEV_EXPOSE === 'true';
+// Only allow login for a specific admin email
+const allowedEmail = (process.env.ADMIN_EMAIL || 'flitcode.dev@gmail.com').toLowerCase();
+// Static PIN for admin access (5-6 digits)
+const adminPIN = process.env.ADMIN_PIN || '123456';
 
 const router = express.Router();
 
@@ -71,31 +70,12 @@ router.post("/login", async (req, res) => {
             return res.status(400).json({ message: "Invalid email or password" });
         }
 
-        // Generate 6-digit OTP
-        const otp = crypto.randomInt(100000, 999999).toString();
-        const otpExpiry = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
-
-        // Save OTP to user document
-        user.otp = otp;
-        user.otpExpiry = otpExpiry;
-        await user.save();
-
-        // Send OTP via email
-        try {
-            await sendOTPEmail(email, otp);
-            const responsePayload = { 
-                message: "OTP sent to your email",
-                requiresOTP: true,
-                email: email
-            };
-            if (exposeDevOtp) {
-                responsePayload.otpDev = otp;
-            }
-            res.json(responsePayload);
-        } catch (emailError) {
-            console.error("Failed to send OTP email:", emailError);
-            res.status(500).json({ message: "Failed to send OTP. Please try again." });
-        }
+        // Credentials valid, require PIN verification
+        res.json({ 
+            message: "Please enter admin PIN",
+            requiresPIN: true,
+            email: email
+        });
     } catch (error) {
         console.error("Login error:", error);
         res.status(500).json({ message: "Internal server error" });
@@ -103,10 +83,10 @@ router.post("/login", async (req, res) => {
 });
 
 // --------------------------------------------------------
-// NEW ROUTE: Verify OTP and complete login
-// @route POST /api/auth/verify-otp
+// NEW ROUTE: Verify PIN and complete login
+// @route POST /api/auth/verify-pin
 // --------------------------------------------------------
-router.post("/verify-otp", async (req, res) => {
+router.post("/verify-pin", async (req, res) => {
     try {
         if (!isConnected()) {
             return res.status(503).json({ 
@@ -115,9 +95,9 @@ router.post("/verify-otp", async (req, res) => {
             });
         }
 
-        const { email, otp } = req.body;
-        if (!email || !otp) {
-            return res.status(400).json({ message: "Email and OTP are required" });
+        const { email, pin } = req.body;
+        if (!email || !pin) {
+            return res.status(400).json({ message: "Email and PIN are required" });
         }
 
         // Enforce allowed admin email
@@ -125,38 +105,19 @@ router.post("/verify-otp", async (req, res) => {
             return res.status(403).json({ message: "Access restricted to the configured admin email" });
         }
 
-        // Find user and select OTP fields
-        const user = await User.findOne({ email }).select('+otp +otpExpiry role');
+        // Find user
+        const user = await User.findOne({ email }).select('role');
         
         if (!user) {
             return res.status(400).json({ message: "Invalid request" });
         }
 
-        // Check if OTP exists
-        if (!user.otp || !user.otpExpiry) {
-            return res.status(400).json({ message: "No OTP found. Please request a new one." });
+        // Verify PIN against env variable
+        if (pin.trim() !== adminPIN) {
+            return res.status(400).json({ message: "Invalid PIN" });
         }
 
-        // Check if OTP is expired
-        if (new Date() > user.otpExpiry) {
-            // Clear expired OTP
-            user.otp = undefined;
-            user.otpExpiry = undefined;
-            await user.save();
-            return res.status(400).json({ message: "OTP has expired. Please request a new one." });
-        }
-
-        // Verify OTP
-        if (user.otp !== otp.trim()) {
-            return res.status(400).json({ message: "Invalid OTP" });
-        }
-
-        // OTP is valid, clear it and generate token
-        user.otp = undefined;
-        user.otpExpiry = undefined;
-        await user.save();
-
-        // Generate token with role
+        // PIN is valid, generate token
         const token = generateToken(user._id, user.role);
         res.json({ 
             token,
@@ -164,68 +125,11 @@ router.post("/verify-otp", async (req, res) => {
             message: "Login successful"
         });
     } catch (error) {
-        console.error("OTP verification error:", error);
+        console.error("PIN verification error:", error);
         res.status(500).json({ message: "Internal server error" });
     }
 });
 
-// --------------------------------------------------------
-// NEW ROUTE: Resend OTP
-// @route POST /api/auth/resend-otp
-// --------------------------------------------------------
-router.post("/resend-otp", async (req, res) => {
-    try {
-        if (!isConnected()) {
-            return res.status(503).json({ 
-                message: "Service temporarily unavailable: database not connected",
-                retryAfter: 10
-            });
-        }
 
-        const { email } = req.body;
-        if (!email) {
-            return res.status(400).json({ message: "Email is required" });
-        }
-
-        // Enforce allowed admin email
-        if (email.toLowerCase() !== allowedEmail) {
-            return res.status(403).json({ message: "Access restricted to the configured admin email" });
-        }
-
-        const user = await User.findOne({ email }).select('role');
-        
-        if (!user) {
-            return res.status(400).json({ message: "Invalid request" });
-        }
-
-        // Generate new OTP
-        const otp = crypto.randomInt(100000, 999999).toString();
-        const otpExpiry = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
-
-        // Save OTP to user document
-        user.otp = otp;
-        user.otpExpiry = otpExpiry;
-        await user.save();
-
-        // Send OTP via email
-        try {
-            await sendOTPEmail(email, otp);
-            const responsePayload = { 
-                message: "New OTP sent to your email",
-                success: true
-            };
-            if (exposeDevOtp) {
-                responsePayload.otpDev = otp;
-            }
-            res.json(responsePayload);
-        } catch (emailError) {
-            console.error("Failed to send OTP email:", emailError);
-            res.status(500).json({ message: "Failed to send OTP. Please try again." });
-        }
-    } catch (error) {
-        console.error("Resend OTP error:", error);
-        res.status(500).json({ message: "Internal server error" });
-    }
-});
 
 module.exports = router;

@@ -6,15 +6,14 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [otp, setOtp] = useState("");
+    const [pin, setPin] = useState("");
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [loginAttempts, setLoginAttempts] = useState(0);
     const [isLocked, setIsLocked] = useState(false);
     const [lockoutTime, setLockoutTime] = useState(null);
-    const [otpSent, setOtpSent] = useState(false);
-    const [resendTimer, setResendTimer] = useState(0);
+    const [pinRequired, setPinRequired] = useState(false);
     const navigate = useNavigate();
     const location = useLocation();
     const nextParam = new URLSearchParams(location.search).get('next');
@@ -53,14 +52,6 @@ const Login = () => {
             }
         }
     }, []);
-    useEffect(() => {
-        if (resendTimer > 0) {
-            const interval = setInterval(() => {
-                setResendTimer(prev => prev - 1);
-            }, 1000);
-            return () => clearInterval(interval);
-        }
-    }, [resendTimer]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -73,9 +64,9 @@ const Login = () => {
             return;
         }
 
-        // If OTP already sent, verify it
-        if (otpSent) {
-            return handleVerifyOTP();
+        // If PIN required, verify it
+        if (pinRequired) {
+            return handleVerifyPIN();
         }
         
         // Step 1: Verify credentials and send OTP
@@ -100,10 +91,9 @@ const Login = () => {
                 password 
             });
             
-            if (res.data.requiresOTP) {
-                // OTP sent successfully
-                setOtpSent(true);
-                setResendTimer(RESEND_COOLDOWN);
+            if (res.data.requiresPIN) {
+                // Credentials valid, PIN required
+                setPinRequired(true);
                 setError("");
             }
         } catch (err) {
@@ -129,9 +119,9 @@ const Login = () => {
         }
     };
 
-    const handleVerifyOTP = async () => {
-        if (!otp.trim() || otp.length !== 6) {
-            setError("Please enter a valid 6-digit OTP");
+    const handleVerifyPIN = async () => {
+        if (!pin.trim() || pin.length < 5 || pin.length > 6) {
+            setError("Please enter a valid 5-6 digit PIN");
             return;
         }
 
@@ -139,9 +129,9 @@ const Login = () => {
         setError("");
 
         try {
-            const res = await api.post("/api/auth/verify-otp", {
+            const res = await api.post("/api/auth/verify-pin", {
                 email: email.trim().toLowerCase(),
-                otp: otp.trim()
+                pin: pin.trim()
             });
 
             if (res.data.token) {
@@ -158,38 +148,20 @@ const Login = () => {
                 return;
             }
 
-            setError("Invalid OTP. Please try again.");
+            setError("Invalid PIN. Please try again.");
         } catch (err) {
-            console.error("OTP verification error:", err);
-            setError(err.response?.data?.message || "Invalid OTP. Please try again.");
+            console.error("PIN verification error:", err);
+            setError(err.response?.data?.message || "Invalid PIN. Please try again.");
         } finally {
             setLoading(false);
         }
     };
 
-    const handleResendOTP = async () => {
-        if (resendTimer > 0) return;
 
-        setLoading(true);
-        setError("");
-
-        try {
-            const res = await api.post("/api/auth/resend-otp", {
-                email: email.trim().toLowerCase()
-            });
-            setResendTimer(RESEND_COOLDOWN);
-            setError("");
-        } catch (err) {
-            console.error("Resend OTP error:", err);
-            setError(err.response?.data?.message || "Failed to resend OTP. Please try again.");
-        } finally {
-            setLoading(false);
-        }
-    };
 
     const handleBackToLogin = () => {
-        setOtpSent(false);
-        setOtp("");
+        setPinRequired(false);
+        setPin("");
         setError("");
     };
 
@@ -198,8 +170,8 @@ const Login = () => {
         localStorage.removeItem("user");
         api.defaults.headers.common.Authorization = undefined;
         setHasSession(false);
-        setOtpSent(false);
-        setOtp("");
+        setPinRequired(false);
+        setPin("");
         setPassword("");
         setEmail("");
     };
@@ -209,14 +181,14 @@ const Login = () => {
             <div className="w-full max-w-md rounded-2xl bg-gray-900/80 p-8 shadow-2xl backdrop-blur-sm border border-gray-700">
                 <div className="text-center mb-8">
                     <h2 className="text-3xl font-bold text-white mb-2">
-                        {otpSent ? "Verify OTP" : "Admin Login"}
+                        {pinRequired ? "Enter Admin PIN" : "Admin Login"}
                     </h2>
                     <p className="text-gray-400 text-sm">
-                        {otpSent 
-                            ? `Enter the 6-digit code sent to ${email}`
+                        {pinRequired 
+                            ? "Enter your 5-6 digit admin PIN to continue"
                             : "Secure access to admin panel"}
                     </p>
-                    {hasSession && !otpSent && (
+                    {hasSession && !pinRequired && (
                         <div className="mt-4 p-3 bg-green-500/10 border border-green-500/30 rounded-lg text-green-300 text-sm flex flex-col gap-2">
                             <span>You're already logged in.</span>
                             <div className="flex gap-3 justify-center">
@@ -240,7 +212,7 @@ const Login = () => {
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-6">
-                    {!otpSent ? (
+                    {!pinRequired ? (
                         <>
                             {/* Email Input */}
                             <div>
@@ -288,42 +260,21 @@ const Login = () => {
                         </>
                     ) : (
                         <>
-                            {/* OTP Input */}
+                            {/* PIN Input */}
                             <div>
                                 <label className="block text-gray-300 text-sm font-medium mb-2">
-                                    Verification Code
+                                    Admin PIN
                                 </label>
                                 <input
                                     type="text"
-                                    value={otp}
-                                    onChange={(e) => setOtp(e.target.value.replace(/\D/g, '').slice(0, 6))}
-                                    placeholder="Enter 6-digit OTP"
+                                    value={pin}
+                                    onChange={(e) => setPin(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                                    placeholder="Enter 5-6 digit PIN"
                                     required
                                     maxLength={6}
-                                    autoComplete="one-time-code"
+                                    autoComplete="off"
                                     className="w-full px-4 py-3 bg-gray-800 border border-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition text-center text-2xl tracking-widest font-mono"
                                 />
-                                <p className="text-xs text-gray-400 mt-2 text-center">
-                                    Code expires in 10 minutes
-                                </p>
-                            </div>
-
-                            {/* Resend OTP */}
-                            <div className="text-center">
-                                {resendTimer > 0 ? (
-                                    <p className="text-sm text-gray-400">
-                                        Resend code in {resendTimer}s
-                                    </p>
-                                ) : (
-                                    <button
-                                        type="button"
-                                        onClick={handleResendOTP}
-                                        disabled={loading}
-                                        className="text-sm text-blue-400 hover:text-blue-300 transition disabled:opacity-50"
-                                    >
-                                        Resend OTP
-                                    </button>
-                                )}
                             </div>
 
                             {/* Back to Login */}
@@ -345,7 +296,7 @@ const Login = () => {
                     )}
                     
                     {/* Security Notice */}
-                    {!isLocked && !otpSent && loginAttempts > 0 && (
+                    {!isLocked && !pinRequired && loginAttempts > 0 && (
                         <div className="p-3 bg-yellow-500/10 border border-yellow-500/30 rounded-lg text-yellow-400 text-xs">
                             ⚠️ Failed login attempt detected. Your account will be temporarily locked after {MAX_ATTEMPTS} failed attempts.
                         </div>
@@ -358,10 +309,10 @@ const Login = () => {
                         className="w-full py-3 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold rounded-lg transition shadow-lg hover:shadow-xl"
                     >
                         {loading 
-                            ? (otpSent ? "Verifying..." : "Sending OTP...") 
+                            ? (pinRequired ? "Verifying..." : "Checking...") 
                             : isLocked 
                             ? "Account Locked" 
-                            : (otpSent ? "Verify OTP" : "Continue")}
+                            : (pinRequired ? "Verify PIN" : "Continue")}
                     </button>
                 </form>
                 
@@ -375,7 +326,7 @@ const Login = () => {
                             <span className="text-green-500">🛡️</span> Brute force protection enabled
                         </p>
                         <p className="flex items-center gap-2">
-                            <span className="text-green-500">📧</span> Email OTP verification
+                            <span className="text-green-500">�</span> PIN verification required
                         </p>
                     </div>
                 </div>
