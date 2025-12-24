@@ -87,5 +87,6 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 // FOR VERCEL DEPLOYMENT
-// Vercel takes the Express instance and turns it into a serverless function
+// Export the Express app directly for Vercel serverless
 module.exports = app;
+module.exports.default = app;
