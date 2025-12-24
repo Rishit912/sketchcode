@@ -10,11 +10,13 @@ const TeamManagement = ({ embedded = false }) => {
     const [editingMember, setEditingMember] = useState(null);
     const [teamMembers, setTeamMembers] = useState([]);
     const [isReordering, setIsReordering] = useState(false);
+    const [loading, setLoading] = useState(true);
     
     // Function to get the current token for API calls
     const getToken = () => localStorage.getItem("token");
 
     const fetchTeamMembers = async () => {
+        setLoading(true);
         const token = getToken();
         // FIX: Pass the token in the headers for all admin reads/writes
         const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
@@ -26,12 +28,29 @@ const TeamManagement = ({ embedded = false }) => {
             const list = res.data || [];
             list.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
             setTeamMembers(list);
+            try {
+                localStorage.setItem('teamMembersCache', JSON.stringify(list));
+                localStorage.setItem('team-updated', Date.now().toString());
+            } catch (e) {}
         } catch (error) {
             console.error("Error fetching team members:", error);
+        } finally {
+            setLoading(false);
         }
     };
 
     useEffect(() => {
+        // Instantly render from cache if available
+        try {
+            const cached = localStorage.getItem('teamMembersCache');
+            if (cached) {
+                const list = JSON.parse(cached);
+                if (Array.isArray(list) && list.length > 0) {
+                    setTeamMembers(list);
+                }
+            }
+        } catch (e) {}
+
         fetchTeamMembers();
 
         const onStorage = (e) => {
@@ -94,6 +113,10 @@ const TeamManagement = ({ embedded = false }) => {
             // If server returns updated list, use it to update UI immediately
             if (res && res.data) {
                 setTeamMembers(res.data);
+                try {
+                    localStorage.setItem('teamMembersCache', JSON.stringify(res.data));
+                    localStorage.setItem('team-updated', Date.now().toString());
+                } catch (e) {}
             } else {
                 // fallback to refetching
                 fetchTeamMembers();
@@ -153,6 +176,17 @@ const TeamManagement = ({ embedded = false }) => {
 
                 {/* Team Members Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+                    {loading && teamMembers.length === 0 && (
+                        Array.from({ length: 4 }).map((_, i) => (
+                            <div key={i} className="bg-gray-800 rounded-2xl shadow-xl border border-gray-700 overflow-hidden animate-pulse max-w-xs mx-auto w-full">
+                                <div className="p-6">
+                                    <div className="h-6 w-32 bg-gray-700 rounded mb-2" />
+                                    <div className="h-4 w-24 bg-gray-700 rounded mb-4" />
+                                    <div className="h-20 w-full bg-gray-700 rounded" />
+                                </div>
+                            </div>
+                        ))
+                    )}
                     {teamMembers.map((member, index) => (
                         <div
                             key={member._id}
@@ -271,7 +305,7 @@ const TeamManagement = ({ embedded = false }) => {
                     ))}
 
                     {/* Fallback Message */}
-                    {teamMembers.length === 0 && (
+                    {!loading && teamMembers.length === 0 && (
                         <div className="md:col-span-2 lg:col-span-4 text-center p-12 bg-gray-800 rounded-2xl border border-gray-700">
                             <p className="text-gray-400 text-xl font-medium">
                                 No team members added yet. Click "Add Team Member" to get started!
