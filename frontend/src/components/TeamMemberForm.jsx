@@ -19,6 +19,7 @@ const TeamMemberForm = ({ setShowModal, fetchTeamMembers, member }) => {
     const [progress, setProgress] = useState(0);
     const navigate = useNavigate();
     const [error, setError] = useState("");
+    const [errors, setErrors] = useState({});
 
     const uploadToCloudinary = async (file) => {
         const formData = new FormData();
@@ -38,8 +39,38 @@ const TeamMemberForm = ({ setShowModal, fetchTeamMembers, member }) => {
         return response.data.secure_url;
     };
 
+    const validateForm = () => {
+        const newErrors = {};
+
+        if (!name.trim()) {
+            newErrors.name = "Name is required";
+        }
+
+        if (!position.trim()) {
+            newErrors.position = "Position is required";
+        }
+
+        if (!bio.trim()) {
+            newErrors.bio = "Bio is required";
+        }
+
+        // For new members, require an image
+        if (!member && !image) {
+            newErrors.image = "Profile image is required";
+        }
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+        
+        // Validate form before submission
+        if (!validateForm()) {
+            return;
+        }
+        
         const token = localStorage.getItem("token");
         setUploading(true);
 
@@ -109,7 +140,7 @@ const TeamMemberForm = ({ setShowModal, fetchTeamMembers, member }) => {
         } finally {
             setUploading(false);
             setShowModal(false);
-            fetchTeamMembers();
+            fetchTeamMembers(true);
         }
     };
 
@@ -132,15 +163,16 @@ const TeamMemberForm = ({ setShowModal, fetchTeamMembers, member }) => {
                 <form onSubmit={handleSubmit} className="grid grid-cols-12 gap-4 p-4">
                     <div className="col-span-6">
                         <label className="block text-sm font-medium text-gray-600 mb-1">
-                            Name
+                            Name <span className="text-red-500">*</span>
                         </label>
                         <input
                             type="text"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
-                            className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none"
+                            className={`w-full border ${errors.name ? 'border-red-500' : 'border-gray-300'} rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none`}
                             required
                         />
+                        {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
                     </div>
 
                     {error && (
@@ -151,28 +183,30 @@ const TeamMemberForm = ({ setShowModal, fetchTeamMembers, member }) => {
 
                     <div className="col-span-6">
                         <label className="block text-sm font-medium text-gray-600 mb-1">
-                            Position
+                            Position <span className="text-red-500">*</span>
                         </label>
                         <input
                             type="text"
                             value={position}
                             onChange={(e) => setPosition(e.target.value)}
-                            className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none"
+                            className={`w-full border ${errors.position ? 'border-red-500' : 'border-gray-300'} rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none`}
                             required
                         />
+                        {errors.position && <p className="text-red-500 text-xs mt-1">{errors.position}</p>}
                     </div>
 
                     <div className="col-span-12">
                         <label className="block text-sm font-medium text-gray-600 mb-1">
-                            Bio
+                            Bio <span className="text-red-500">*</span>
                         </label>
                         <textarea
                             value={bio}
                             onChange={(e) => setBio(e.target.value)}
-                            className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none"
+                            className={`w-full border ${errors.bio ? 'border-red-500' : 'border-gray-300'} rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none`}
                             rows={3}
                             required
                         />
+                        {errors.bio && <p className="text-red-500 text-xs mt-1">{errors.bio}</p>}
                     </div>
 
                     <div className="col-span-12">
@@ -190,14 +224,20 @@ const TeamMemberForm = ({ setShowModal, fetchTeamMembers, member }) => {
 
                     <div className="col-span-12">
                         <label className="block text-sm font-medium text-gray-600 mb-1">
-                            Profile Image
+                            Profile Image {!member && <span className="text-red-500">*</span>}
                         </label>
                         <input
                             type="file"
                             accept="image/*"
                             onChange={(e) => setImage(e.target.files[0])}
-                            className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none"
+                            className={`w-full border ${errors.image ? 'border-red-500' : 'border-gray-300'} rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none`}
                         />
+                        {errors.image && <p className="text-red-500 text-xs mt-1">{errors.image}</p>}
+                        {member && member.imageUrl && (
+                            <p className="text-gray-500 text-xs mt-1">
+                                Currently has profile image. Upload new image to replace it.
+                            </p>
+                        )}
                     </div>
 
                     <div className="col-span-4">

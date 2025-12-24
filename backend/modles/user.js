@@ -20,6 +20,14 @@ const userSchema = new mongoose.Schema({
     enum: ['user', 'admin'],
     default: 'admin',
   },
+  otp: {
+    type: String,
+    select: false, // Don't return in queries
+  },
+  otpExpiry: {
+    type: Date,
+    select: false,
+  },
 }, {
     timestamps: true
 });

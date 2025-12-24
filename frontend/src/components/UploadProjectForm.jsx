@@ -18,6 +18,7 @@ const UploadProjectForm = ({ setShowModal, fetchProjects, project }) => {
     const [images, setImages] = useState([]);
     const [uploading, setUploading] = useState(false);
     const [progress, setProgress] = useState(0);
+    const [errors, setErrors] = useState({});
 
 
     const handleImageChange = (e) => {
@@ -42,8 +43,38 @@ const UploadProjectForm = ({ setShowModal, fetchProjects, project }) => {
         return response.data.secure_url; // this is the public image URL
     };
 
+    const validateForm = () => {
+        const newErrors = {};
+
+        if (!title.trim()) {
+            newErrors.title = "Project name is required";
+        }
+
+        if (!description.trim()) {
+            newErrors.description = "Description is required";
+        }
+
+        if (!techStack.trim()) {
+            newErrors.techStack = "Tech stack is required";
+        }
+
+        // For new projects, require at least one image
+        // For editing, allow submission without new images (existing images remain)
+        if (!project && images.length === 0) {
+            newErrors.images = "At least one project image is required";
+        }
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        // Validate form before submission
+        if (!validateForm()) {
+            return;
+        }
 
         const token = localStorage.getItem("token");
         setUploading(true);
@@ -142,28 +173,32 @@ const UploadProjectForm = ({ setShowModal, fetchProjects, project }) => {
                 <form onSubmit={handleSubmit} className="grid grid-cols-12 gap-4 px-4">
                     <div className="grid col-span-6">
                         <label className="block text-sm font-medium text-gray-600 mb-1">
-                            Project Name
+                            Project Name <span className="text-red-500">*</span>
                         </label>
                         <input
                             type="text"
                             placeholder="Project Title"
                             value={title}
                             onChange={(e) => setTitle(e.target.value)}
-                            className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none"
+                            className={`w-full border ${errors.title ? 'border-red-500' : 'border-gray-300'} rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none`}
+                            required
                         />
+                        {errors.title && <p className="text-red-500 text-xs mt-1">{errors.title}</p>}
                     </div>
 
                     <div className="col-span-6">
                         <label className="block text-sm font-medium text-gray-600 mb-1">
-                            Tech Stack
+                            Tech Stack <span className="text-red-500">*</span>
                         </label>
                         <input
                             type="text"
                             value={techStack}
                             onChange={(e) => setTechStack(e.target.value)}
-                            className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none"
+                            className={`w-full border ${errors.techStack ? 'border-red-500' : 'border-gray-300'} rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none`}
                             placeholder="React, Node.js, MongoDB..."
+                            required
                         />
+                        {errors.techStack && <p className="text-red-500 text-xs mt-1">{errors.techStack}</p>}
                     </div>
 
                     <div className="col-span-6">
@@ -177,15 +212,17 @@ const UploadProjectForm = ({ setShowModal, fetchProjects, project }) => {
 
                     <div className="col-span-12">
                         <label className="block text-sm font-medium text-gray-600 mb-1">
-                            Description
+                            Description <span className="text-red-500">*</span>
                         </label>
                         <textarea
                             placeholder="Description"
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
-                            className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none"
+                            className={`w-full border ${errors.description ? 'border-red-500' : 'border-gray-300'} rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none`}
                             rows={3}
+                            required
                         />
+                        {errors.description && <p className="text-red-500 text-xs mt-1">{errors.description}</p>}
                     </div>
 
 
@@ -217,15 +254,21 @@ const UploadProjectForm = ({ setShowModal, fetchProjects, project }) => {
 
                     <div className="col-span-12">
                         <label className="block text-sm font-medium text-gray-600 mb-1">
-                            Project Images
+                            Project Images {!project && <span className="text-red-500">*</span>}
                         </label>
                         <input
                             type="file"
                             multiple
                             accept="image/*"
                             onChange={handleImageChange}
-                            className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none"
+                            className={`w-full border ${errors.images ? 'border-red-500' : 'border-gray-300'} rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none`}
                         />
+                        {errors.images && <p className="text-red-500 text-xs mt-1">{errors.images}</p>}
+                        {project && project.imageUrls && project.imageUrls.length > 0 && (
+                            <p className="text-gray-500 text-xs mt-1">
+                                Currently has {project.imageUrls.length} image(s). Upload new images to replace them.
+                            </p>
+                        )}
                     </div>
 
                     {uploading && (

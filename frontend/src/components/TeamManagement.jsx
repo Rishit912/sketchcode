@@ -76,7 +76,8 @@ const TeamManagement = ({ embedded = false }) => {
         const token = getToken();
         if (!token) {
             console.error("Missing token for reorder action.");
-            try { alert('Not authorized: missing token. Please login again.'); } catch (e) {}
+            alert('Session expired. Please login again.');
+            window.location.href = '/login';
             return;
         }
 
@@ -85,7 +86,7 @@ const TeamManagement = ({ embedded = false }) => {
             // Support both `_id` and `id` in case items use different id shapes
             const orderedIds = list.map(m => m._id || m.id);
             console.log('Persisting team order, orderedIds:', orderedIds);
-            console.log('PATCH url:', `${api.defaults.baseURL}/api/team/reorder`);
+            
             const res = await api.patch(`/api/team/reorder`, { orderedIds }, {
                 headers: { Authorization: `Bearer ${token}` }
             });
@@ -99,7 +100,19 @@ const TeamManagement = ({ embedded = false }) => {
             }
         } catch (err) {
             console.error('Failed to persist order', err);
-            try { alert('Failed to save new team order. See console for details.'); } catch (e) {}
+            
+            if (err.response?.status === 403) {
+                alert('Access denied. You do not have admin privileges or your session has expired. Please login again.');
+                localStorage.removeItem('token');
+                window.location.href = '/login';
+            } else if (err.response?.status === 401) {
+                alert('Session expired. Please login again.');
+                localStorage.removeItem('token');
+                window.location.href = '/login';
+            } else {
+                alert('Failed to save new team order: ' + (err.response?.data?.message || err.message || 'Unknown error'));
+            }
+            
             // fallback: refresh local state
             fetchTeamMembers();
         } finally {
