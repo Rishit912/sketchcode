@@ -49,6 +49,11 @@ app.use(cors({
     credentials: true
 }));
 
+// Root Health (helps verify function is mounted)
+app.get("/", (req, res) => {
+    res.status(200).json({ ok: true, message: "Backend root reachable", time: new Date().toISOString() });
+});
+
 // Health Check
 app.get("/api/ping", (req, res) => {
     res.status(200).json({ error: false, message: "Pong" });
