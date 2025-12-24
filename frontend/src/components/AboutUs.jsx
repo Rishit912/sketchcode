@@ -263,7 +263,7 @@ const AboutUs = () => {
               </h3>
               <p className="text-gray-400 max-w-3xl mx-auto mb-4">
                 “At FlitCode, we believe technology should empower creativity.
-                Our mission is to make innovation accessible to everyone — one
+                Our mission is to make innovation accessible to everyone one
                 smart product at a time.”
               </p>
               <div className="text-sm text-gray-400">
