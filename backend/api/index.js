@@ -86,5 +86,6 @@ if (process.env.NODE_ENV !== 'production') {
     });
 }
 
-// Export a named handler so Vercel's launcher can find it
-exports.handler = (req, res) => app(req, res);
+// Export both default app and explicit handler for Vercel compatibility
+module.exports = app;
+module.exports.handler = (req, res) => app(req, res);
