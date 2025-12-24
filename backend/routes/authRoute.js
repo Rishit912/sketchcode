@@ -112,8 +112,9 @@ router.post("/verify-pin", async (req, res) => {
             return res.status(400).json({ message: "Invalid request" });
         }
 
-        // Verify PIN against env variable
-        if (pin.trim() !== adminPIN) {
+        // Verify PIN against env variable (accept 5 or 6 digits)
+        const enteredPin = pin.trim();
+        if (enteredPin.length < 5 || enteredPin.length > 6 || enteredPin !== adminPIN) {
             return res.status(400).json({ message: "Invalid PIN" });
         }
 
