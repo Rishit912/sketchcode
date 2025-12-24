@@ -86,5 +86,5 @@ if (process.env.NODE_ENV !== 'production') {
     });
 }
 
-// Export Express app directly for Vercel
-module.exports = app;
+// Export a named handler so Vercel's launcher can find it
+exports.handler = (req, res) => app(req, res);
