@@ -10,5 +10,13 @@ const api = axios.create({
   baseURL: BASE_URL,
 });
 
+// Attach persisted token to all requests after page reload
+if (isBrowser) {
+  const token = localStorage.getItem('token');
+  if (token) {
+    api.defaults.headers.common.Authorization = `Bearer ${token}`;
+  }
+}
+
 export default api;
 export { BASE_URL };

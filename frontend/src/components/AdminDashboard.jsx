@@ -4,6 +4,7 @@ import { FaEdit, FaExternalLinkAlt, FaPlus, FaTrash } from "react-icons/fa";
 import UploadProjectForm from "./UploadProjectForm";
 import { Link, useLocation } from 'react-router-dom';
 import TeamManagement from './TeamManagement';
+import JobManagement from './JobManagement';
 
 // Using shared `api` instance from ../api.js — no inline base URL required
 
@@ -102,16 +103,21 @@ const AdminDashboard = () => {
     }
 
     const location = useLocation();
-    const view = location.pathname.includes('/admin/team') ? 'team' : 'projects';
+    const view = location.pathname.includes('/admin/team')
+        ? 'team'
+        : location.pathname.includes('/admin/jobs')
+        ? 'jobs'
+        : 'projects';
 
     return (
-        <div className="flex min-h-screen bg-gray-100 text-gray-800">
+        <div className="flex min-h-screen bg-gray-900 text-gray-100">
             {/* Sidebar */}
-            <div className="w-64 bg-gray-800 text-white p-6">
+            <div className="w-64 bg-gray-950 text-white p-6 border-r border-gray-800">
                 <h2 className="text-xl font-bold mb-6">Admin Panel</h2>
                 <nav>
-                    <Link to="/admin-dashboard" className={`block py-2 px-4 rounded hover:bg-gray-700 mb-2 ${view==='projects'?'bg-gray-700':''}`}>Projects</Link>
-                    <Link to="/admin/team" className={`block py-2 px-4 rounded hover:bg-gray-700 ${view==='team'?'bg-gray-700':''}`}>Team Members</Link>
+                    <Link to="/admin-dashboard" className={`block py-2 px-4 rounded hover:bg-gray-800 mb-2 ${view==='projects'?'bg-gray-800':''}`}>Projects</Link>
+                    <Link to="/admin/team" className={`block py-2 px-4 rounded hover:bg-gray-800 mb-2 ${view==='team'?'bg-gray-800':''}`}>Team Members</Link>
+                    <Link to="/admin/jobs" className={`block py-2 px-4 rounded hover:bg-gray-800 ${view==='jobs'?'bg-gray-800':''}`}>Job Postings</Link>
                 </nav>
             </div>
 
@@ -120,14 +126,16 @@ const AdminDashboard = () => {
                 {view === 'team' ? (
                     // Render Team management within the admin layout (embedded)
                     <TeamManagement embedded={true} />
+                ) : view === 'jobs' ? (
+                    <JobManagement embedded={true} />
                 ) : (
                     <>
                         {/* Header */}
                         <div className="flex justify-between items-center mb-8">
-                            <h1 className="text-2xl font-bold">Projects</h1>
+                            <h1 className="text-3xl font-bold text-white">Projects</h1>
                             <button
                                 onClick={handleOpenModal}
-                                className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition"
+                                className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg transition shadow-lg hover:shadow-xl"
                             >
                                 <FaPlus size={18} /> Add Project
                             </button>
@@ -137,7 +145,7 @@ const AdminDashboard = () => {
                             {projects.map((project, index) => (
                                 <div
                                     key={project._id || project.id}
-                                    className="bg-gray-800 rounded-2xl shadow-xl transform transition-transform duration-300 hover:scale-[1.02] border border-gray-700 overflow-hidden"
+                                    className="bg-gray-800 rounded-2xl shadow-2xl transform transition-transform duration-300 hover:scale-[1.02] border border-gray-700 overflow-hidden hover:border-gray-600"
                                 >
                                     <div className="w-full h-56 flex overflow-x-auto">
                                         {project?.imageUrls?.length > 0 ? (
@@ -176,12 +184,12 @@ const AdminDashboard = () => {
                                             </a>
 
                                             <div className="ml-auto flex gap-2">
-                                                <button onClick={() => moveProjectUp(index)} className="bg-gray-600 text-white px-2 py-1 rounded hover:brightness-90" title="Move up">↑</button>
-                                                <button onClick={() => moveProjectDown(index)} className="bg-gray-600 text-white px-2 py-1 rounded hover:brightness-90" title="Move down">↓</button>
-                                                <button onClick={() => handleEdit(project)} className="bg-yellow-500 text-white px-3 py-1 rounded hover:brightness-90">
+                                                <button onClick={() => moveProjectUp(index)} className="bg-gray-700 text-white px-2 py-1 rounded hover:bg-gray-600 transition" title="Move up">↑</button>
+                                                <button onClick={() => moveProjectDown(index)} className="bg-gray-700 text-white px-2 py-1 rounded hover:bg-gray-600 transition" title="Move down">↓</button>
+                                                <button onClick={() => handleEdit(project)} className="bg-yellow-600 text-white px-3 py-1 rounded hover:bg-yellow-700 transition">
                                                     <FaEdit />
                                                 </button>
-                                                <button onClick={() => handleDelete(project._id || project.id)} className="bg-red-600 text-white px-3 py-1 rounded hover:brightness-90">
+                                                <button onClick={() => handleDelete(project._id || project.id)} className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700 transition">
                                                     <FaTrash />
                                                 </button>
                                             </div>
@@ -193,7 +201,7 @@ const AdminDashboard = () => {
                             {/* Fallback Message */}
                             {projects.length === 0 && (
                                 <div className="md:col-span-2 lg:col-span-3 text-center p-12 bg-gray-800 rounded-2xl border border-gray-700">
-                                    <p className="text-gray-400 text-xl font-medium">
+                                    <p className="text-gray-300 text-xl font-medium">
                                         No projects found for this category yet. We are working on adding more projects soon!
                                     </p>
                                 </div>

@@ -5,6 +5,7 @@ const connectDB = require("../config/db");
 const authRoute = require("../routes/authRoute");
 const projectRoutes = require("../routes/projectRoute");
 const teamRoutes = require("../routes/teamRoute");
+const jobRoutes = require("../routes/jobRoute");
 
 const app = express();
 
@@ -63,6 +64,7 @@ app.get("/api/ping", (req, res) => {
 app.use("/api/auth", authRoute);
 app.use("/api/projects", projectRoutes);
 app.use("/api/team", teamRoutes);
+app.use("/api/jobs", jobRoutes);
 
 // Registration Logic - DISABLED
 app.post("/api/auth/register", async (req, res) => {

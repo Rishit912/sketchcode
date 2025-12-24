@@ -15,6 +15,8 @@ import Careers from './components/Careers'
 import Login from "./components/Login";
 import AdminDashboard from "./components/AdminDashboard";
 import TeamManagement from "./components/TeamManagement";
+import ProtectedRoute from "./components/ProtectedRoute";
+import JobManagement from "./components/JobManagement";
 import Team from './components/Team';
 import Preloader from './components/Preloader';
 import food from './assets/food.png';
@@ -61,11 +63,33 @@ function App() {
   <Route path="/careers" element={<Careers />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/login" element={<Login />} />
-    <Route path="/admin-dashboard" element={<AdminDashboard />} />
-    {/* Ensure admin routes render the AdminDashboard container so the left admin sidebar stays visible
-      when navigating to team management. AdminDashboard will detect the path and render the
-      appropriate embedded view (projects or team). */}
-    <Route path="/admin/team" element={<AdminDashboard />} />
+        <Route
+          path="/admin-dashboard"
+          element={
+            <ProtectedRoute>
+              <AdminDashboard />
+            </ProtectedRoute>
+          }
+        />
+        {/* Ensure admin routes render the AdminDashboard container so the left admin sidebar stays visible
+          when navigating to team management. AdminDashboard will detect the path and render the
+          appropriate embedded view (projects or team). */}
+        <Route
+          path="/admin/team"
+          element={
+            <ProtectedRoute>
+              <AdminDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/jobs"
+          element={
+            <ProtectedRoute>
+              <AdminDashboard />
+            </ProtectedRoute>
+          }
+        />
   <Route path="/team" element={<Team />} />
         <Route path="*" element={<Home />} />
       </Routes>
