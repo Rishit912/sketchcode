@@ -9,7 +9,6 @@ const teamRoutes = require("../routes/teamRoute");
 const app = express();
 
 // Database Connection Middleware for Serverless
-// This ensures DB connects before handling any request
 const ensureDB = async (req, res, next) => {
     if (mongoose.connection && mongoose.connection.readyState === 1) {
         return next();
@@ -18,13 +17,14 @@ const ensureDB = async (req, res, next) => {
         await connectDB();
         next();
     } catch (err) {
+        console.error("Database connection failed:", err);
         res.status(500).json({ error: true, message: "Database connection failed" });
     }
 };
 
 // Middleware
 app.use(express.json());
-app.use(ensureDB); // Runs on every request
+app.use(ensureDB);
 
 // CORS Configuration
 const allowedOrigins = [
@@ -42,29 +42,24 @@ app.use(cors({
         if (!origin || allowedOrigins.includes(origin)) {
             return callback(null, true);
         }
+        console.log("CORS blocked origin:", origin);
         return callback(new Error("Not allowed by CORS"), false);
     },
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     credentials: true
 }));
 
+// Health Check
+app.get("/api/ping", (req, res) => {
+    res.status(200).json({ error: false, message: "Pong" });
+});
+
 // API Routes
 app.use("/api/auth", authRoute);
 app.use("/api/projects", projectRoutes);
 app.use("/api/team", teamRoutes);
 
-// Health Check
-app.get("/ping", (req, res) => {
-    res.status(200).json({ error: false, message: "Pong" });
-});
-
-// Health Check with /api prefix (for direct function hits like /api/ping)
-app.get("/api/ping", (req, res) => {
-    res.status(200).json({ error: false, message: "Pong" });
-});
-
 // Registration Logic - DISABLED
-// Only the setup script can create the admin user
 app.post("/api/auth/register", async (req, res) => {
     res.status(403).json({ 
         error: true, 
@@ -86,6 +81,5 @@ if (process.env.NODE_ENV !== 'production') {
     });
 }
 
-// FOR VERCEL DEPLOYMENT
-// Export the Express app as default for Vercel serverless
+// Export for Vercel
 module.exports = app;
