@@ -1,13 +1,10 @@
 const express = require("express");
 const mongoose = require("mongoose");
-require("dotenv").config();
 const cors = require("cors");
 const connectDB = require("../config/db");
 const authRoute = require("../routes/authRoute");
 const projectRoutes = require("../routes/projectRoute");
 const teamRoutes = require("../routes/teamRoute");
-const User = require("../modles/user"); 
-const jwt = require("jsonwebtoken");
 
 const app = express();
 
@@ -61,6 +58,11 @@ app.get("/ping", (req, res) => {
     res.status(200).json({ error: false, message: "Pong" });
 });
 
+// Health Check with /api prefix (for direct function hits like /api/ping)
+app.get("/api/ping", (req, res) => {
+    res.status(200).json({ error: false, message: "Pong" });
+});
+
 // Registration Logic - DISABLED
 // Only the setup script can create the admin user
 app.post("/api/auth/register", async (req, res) => {
@@ -72,6 +74,7 @@ app.post("/api/auth/register", async (req, res) => {
 
 // FOR LOCAL DEVELOPMENT
 if (process.env.NODE_ENV !== 'production') {
+    require("dotenv").config();
     const PORT = process.env.PORT || 5000;
     connectDB().then(() => {
         app.listen(PORT, () => {

@@ -1,17 +1,20 @@
 const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const User = require("../modles/user"); // Assumes User model is updated with hashing logic
+const User = require("../modles/user");
 const { isConnected } = require("../config/db");
 
 const router = express.Router();
 
-// Utility to generate token - FIX: Include user role in the token payload
+// Utility to generate token
 const generateToken = (id, role) => {
-    // Uses JWT_KEY from process.env (or a secure fallback secret)
+    const secret = process.env.JWT_KEY;
+    if (!secret) {
+        throw new Error('JWT_KEY environment variable is not set');
+    }
     return jwt.sign(
-        { id: id, role: role }, // ADDED ROLE HERE
-        process.env.JWT_KEY || 'your_fallback_secret', 
+        { id: id, role: role },
+        secret, 
         { expiresIn: "1d" }
     );
 };
