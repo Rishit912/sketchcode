@@ -1,15 +1,11 @@
 const nodemailer = require('nodemailer');
 
 // Create transporter for sending emails
-// For production, use a real email service (Gmail, SendGrid, AWS SES, etc.)
+// If SMTP env vars exist, use them in any NODE_ENV. Otherwise, fall back to console logging.
 const createTransporter = () => {
-    // For development: using ethereal email (fake SMTP service for testing)
-    // In production, replace with real SMTP credentials
-    
-    const isProduction = process.env.NODE_ENV === 'production';
-    
-    if (isProduction && process.env.EMAIL_HOST && process.env.EMAIL_USER && process.env.EMAIL_PASS) {
-        // Production email config
+    const hasSMTP = !!(process.env.EMAIL_HOST && process.env.EMAIL_USER && process.env.EMAIL_PASS);
+
+    if (hasSMTP) {
         return nodemailer.createTransport({
             host: process.env.EMAIL_HOST, // e.g., smtp.gmail.com
             port: parseInt(process.env.EMAIL_PORT || '587'),
@@ -19,11 +15,11 @@ const createTransporter = () => {
                 pass: process.env.EMAIL_PASS,
             },
         });
-    } else {
-        // Development: Log to console instead of sending real emails
-        console.log('⚠️ Using console-only email service (no real emails sent)');
-        return null;
     }
+
+    // No SMTP configured: log OTP to console
+    console.log('⚠️ No SMTP configured. Falling back to console-only OTP logging.');
+    return null;
 };
 
 // Send OTP email
