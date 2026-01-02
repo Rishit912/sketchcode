@@ -54,10 +54,6 @@ const UploadProjectForm = ({ setShowModal, fetchProjects, project }) => {
             newErrors.description = "Description is required";
         }
 
-        if (!techStack.trim()) {
-            newErrors.techStack = "Tech stack is required";
-        }
-
         // For new projects, require at least one image
         // For editing, allow submission without new images (existing images remain)
         if (!project && images.length === 0) {
@@ -188,15 +184,14 @@ const UploadProjectForm = ({ setShowModal, fetchProjects, project }) => {
 
                     <div className="col-span-6">
                         <label className="block text-sm font-medium text-gray-600 mb-1">
-                            Tech Stack <span className="text-red-500">*</span>
+                            Tech Stack
                         </label>
                         <input
                             type="text"
                             value={techStack}
                             onChange={(e) => setTechStack(e.target.value)}
                             className={`w-full border ${errors.techStack ? 'border-red-500' : 'border-gray-300'} rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none text-gray-900`}
-                            placeholder="React, Node.js, MongoDB..."
-                            required
+                            placeholder="React, Node.js, MongoDB... (Optional)"
                         />
                         {errors.techStack && <p className="text-red-500 text-xs mt-1">{errors.techStack}</p>}
                     </div>
