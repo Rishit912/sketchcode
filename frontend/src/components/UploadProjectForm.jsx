@@ -165,7 +165,7 @@ const UploadProjectForm = ({ setShowModal, fetchProjects, project }) => {
                     <button
                         type="button"
                         onClick={() => setShowModal(false)}
-                        className="bg-gray-200 p-1.5 rounded-full"
+                        className="bg-gray-200 p-1.5 rounded-full text-red-700 hover:bg-gray-300"
                     >
                         <IoClose size={20} />
                     </button>
@@ -180,7 +180,7 @@ const UploadProjectForm = ({ setShowModal, fetchProjects, project }) => {
                             placeholder="Project Title"
                             value={title}
                             onChange={(e) => setTitle(e.target.value)}
-                            className={`w-full border ${errors.title ? 'border-red-500' : 'border-gray-300'} rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none`}
+                            className={`w-full border ${errors.title ? 'border-red-500' : 'border-gray-300'} rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none text-gray-900`}
                             required
                         />
                         {errors.title && <p className="text-red-500 text-xs mt-1">{errors.title}</p>}
@@ -194,7 +194,7 @@ const UploadProjectForm = ({ setShowModal, fetchProjects, project }) => {
                             type="text"
                             value={techStack}
                             onChange={(e) => setTechStack(e.target.value)}
-                            className={`w-full border ${errors.techStack ? 'border-red-500' : 'border-gray-300'} rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none`}
+                            className={`w-full border ${errors.techStack ? 'border-red-500' : 'border-gray-300'} rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none text-gray-900`}
                             placeholder="React, Node.js, MongoDB..."
                             required
                         />
@@ -203,7 +203,7 @@ const UploadProjectForm = ({ setShowModal, fetchProjects, project }) => {
 
                     <div className="col-span-6">
                         <label className="block text-sm font-medium text-gray-600 mb-1">Category</label>
-                        <select value={category} onChange={e => setCategory(e.target.value)} className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none">
+                        <select value={category} onChange={e => setCategory(e.target.value)} className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none text-gray-900">
                             <option value="webDevelopment">Web Development</option>
                             <option value="appDevelopment">App Development</option>
                             <option value="webDesign">Web Design</option>
@@ -218,7 +218,7 @@ const UploadProjectForm = ({ setShowModal, fetchProjects, project }) => {
                             placeholder="Description"
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
-                            className={`w-full border ${errors.description ? 'border-red-500' : 'border-gray-300'} rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none`}
+                            className={`w-full border ${errors.description ? 'border-red-500' : 'border-gray-300'} rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none text-gray-900`}
                             rows={3}
                             required
                         />
@@ -235,7 +235,7 @@ const UploadProjectForm = ({ setShowModal, fetchProjects, project }) => {
                             placeholder="GitHub Link"
                             value={github}
                             onChange={(e) => setGithub(e.target.value)}
-                            className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none"
+                            className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none text-gray-900"
                         />
                     </div>
 
@@ -248,7 +248,7 @@ const UploadProjectForm = ({ setShowModal, fetchProjects, project }) => {
                             placeholder="Live Demo Link"
                             value={liveDemo}
                             onChange={(e) => setLiveDemo(e.target.value)}
-                            className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none"
+                            className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none text-gray-900"
                         />
                     </div>
 
@@ -261,7 +261,7 @@ const UploadProjectForm = ({ setShowModal, fetchProjects, project }) => {
                             multiple
                             accept="image/*"
                             onChange={handleImageChange}
-                            className={`w-full border ${errors.images ? 'border-red-500' : 'border-gray-300'} rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none`}
+                            className={`w-full border ${errors.images ? 'border-red-500' : 'border-gray-300'} rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none text-gray-900`}
                         />
                         {errors.images && <p className="text-red-500 text-xs mt-1">{errors.images}</p>}
                         {project && project.imageUrls && project.imageUrls.length > 0 && (

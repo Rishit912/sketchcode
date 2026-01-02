@@ -57,7 +57,7 @@ const Footer = () => {
             <div className="flex gap-4">
               {/* <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="text-gray-300 hover:text-blue-400"><FaFacebook /></a> */}
               {/* <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter" className="text-gray-300 hover:text-blue-400"><FaTwitter /></a> */}
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="text-gray-300 hover:text-blue-400"><FaLinkedin /></a>
+              <a href="https://www.linkedin.com/company/flitcode/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="text-gray-300 hover:text-blue-400"><FaLinkedin /></a>
               <a href="https://www.instagram.com/FlitCode?igsh=ejcxb2Y0MnpnMHlj" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-gray-300 hover:text-blue-400"><FaInstagram /></a>
             </div>
           </div>
