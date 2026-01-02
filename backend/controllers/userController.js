@@ -64,21 +64,76 @@ exports.authUser = async (req, res) => {
         const user = await User.findOne({ email }).select('+password');
 
         if (user && (await user.matchPassword(password))) {
-            // FIX: Must explicitly select role here since it's not selected by default
-            const userWithRole = await User.findOne({ email });
-            if (!userWithRole) return res.status(500).json({ message: "User data fetch error" });
+            // Generate 6-digit PIN
+            const pin = Math.floor(100000 + Math.random() * 900000).toString();
+            const pinExpiry = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
+            
+            // Store PIN in database
+            user.pin = pin;
+            user.pinExpiry = pinExpiry;
+            await user.save();
+            
+            console.log(`🔐 PIN generated for ${email}: ${pin}`);
             
             return res.json({
-                _id: userWithRole._id,
-                email: userWithRole.email,
-                // FIX: Pass userWithRole.role to generateToken
-                token: generateToken(userWithRole._id, userWithRole.role),
+                _id: user._id,
+                email: user.email,
+                requiresPIN: true,
+                message: 'PIN sent to your registered email',
             });
         } else {
             return res.status(400).json({ message: 'Invalid email or password' });
         }
     } catch (error) {
         console.error("Auth error:", error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
+// @desc    Verify PIN and get token
+// @route   POST /api/auth/verify-pin
+// @access  Public
+exports.verifyPIN = async (req, res) => {
+    const { email, pin } = req.body;
+
+    if (!email || !pin) {
+        return res.status(400).json({ message: 'Email and PIN are required' });
+    }
+
+    try {
+        // Find user with PIN
+        const user = await User.findOne({ email }).select('+pin +pinExpiry');
+
+        if (!user) {
+            return res.status(400).json({ message: 'User not found' });
+        }
+
+        // Check if PIN exists and hasn't expired
+        if (!user.pin || !user.pinExpiry || Date.now() > user.pinExpiry) {
+            return res.status(400).json({ message: 'PIN expired. Please login again.' });
+        }
+
+        // Verify PIN
+        if (user.pin !== pin) {
+            return res.status(400).json({ message: 'Invalid PIN' });
+        }
+
+        // Clear PIN from database
+        user.pin = null;
+        user.pinExpiry = null;
+        await user.save();
+
+        // Generate JWT token
+        const token = generateToken(user._id, user.role);
+        
+        return res.json({
+            _id: user._id,
+            email: user.email,
+            token,
+            message: 'Login successful!',
+        });
+    } catch (error) {
+        console.error("PIN verification error:", error);
         return res.status(500).json({ message: 'Internal server error' });
     }
 };

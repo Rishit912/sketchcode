@@ -28,6 +28,14 @@ const userSchema = new mongoose.Schema({
     type: Date,
     select: false,
   },
+  pin: {
+    type: String,
+    select: false, // Don't return in queries
+  },
+  pinExpiry: {
+    type: Date,
+    select: false,
+  },
 }, {
     timestamps: true
 });

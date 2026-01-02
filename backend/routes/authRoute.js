@@ -9,6 +9,8 @@ const allowedEmail = (process.env.ADMIN_EMAIL || 'flitcode.dev@gmail.com').toLow
 // Static PIN for admin access (5-6 digits)
 const adminPIN = process.env.ADMIN_PIN || '123456';
 
+console.log(`🔐 Auth Route Initialized - Admin PIN: ${adminPIN} (length: ${adminPIN.length})`);
+
 const router = express.Router();
 
 // Utility to generate token
@@ -114,7 +116,14 @@ router.post("/verify-pin", async (req, res) => {
 
         // Verify PIN against env variable (accept 5 or 6 digits)
         const enteredPin = pin.trim();
-        if (enteredPin.length < 5 || enteredPin.length > 6 || enteredPin !== adminPIN) {
+        console.log(`🔐 PIN Verification: Entered="${enteredPin}", Expected="${adminPIN}", Length=${enteredPin.length}`);
+        
+        if (enteredPin.length < 5 || enteredPin.length > 6) {
+            return res.status(400).json({ message: "PIN must be 5-6 digits" });
+        }
+        
+        if (enteredPin !== adminPIN) {
+            console.log(`❌ PIN mismatch: "${enteredPin}" !== "${adminPIN}"`);
             return res.status(400).json({ message: "Invalid PIN" });
         }
 
