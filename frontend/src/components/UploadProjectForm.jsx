@@ -139,7 +139,7 @@ const UploadProjectForm = ({ setShowModal, fetchProjects, project }) => {
             } catch (e) {}
 
             // refresh list in admin and close
-            fetchProjects(); // This fetches the list for the Admin Dashboard
+            await fetchProjects(); // This fetches the list for the Admin Dashboard
 
             // if we just added a new project (not editing), redirect admin to the public portfolio and show confirmation
             if (!project) {

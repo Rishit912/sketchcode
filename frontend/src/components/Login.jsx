@@ -129,10 +129,13 @@ const Login = () => {
         setError("");
 
         try {
-            const res = await api.post("/api/auth/verify-pin", {
+            const pinData = {
                 email: email.trim().toLowerCase(),
                 pin: pin.trim()
-            });
+            };
+            console.log("🔐 Sending PIN verification:", pinData);
+            
+            const res = await api.post("/api/auth/verify-pin", pinData);
 
             if (res.data.token) {
                 // Clear any lockout on successful login

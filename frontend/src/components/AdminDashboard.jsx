@@ -30,9 +30,11 @@ const AdminDashboard = () => {
         try {
             const res = await api.get(`/api/projects`, config);
             setProjects(res.data);
+            return res.data;
         } catch(error) {
              console.error("Error fetching projects for admin:", error);
              setProjects([]);
+             return [];
         }
     };
 
